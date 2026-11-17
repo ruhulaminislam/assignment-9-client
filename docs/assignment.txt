@@ -1,0 +1,873 @@
+# SalonBook — Project Assignment Requirements
+
+**Assignment:** Assignment 9  
+**Category:** 002  
+**Project Name:** SalonBook — Salon Appointment Booking Platform
+
+---
+
+# 01. Project Overview
+
+## 1.1 Project Description
+
+SalonBook is a salon appointment booking platform where customers can explore salon services, view service information, and request appointments online.
+
+The salon administrator can create and manage salon services, review appointment requests, confirm or cancel appointments, manage customers, and monitor payments.
+
+Customers can manage their own appointment requests and pay for confirmed appointments through Stripe.
+
+## 1.2 Project Objective
+
+Build a beginner-friendly, role-based web application using:
+
+- Next.js
+- TypeScript
+- Express.js
+- MongoDB
+- Better Auth
+- JWT Authentication and Authorization
+- REST APIs
+- Stripe
+
+## 1.3 System Users
+
+The platform has two primary roles:
+
+**Customer**
+- Explore salon services.
+- Request appointments.
+- Manage personal appointments.
+- Pay for confirmed appointments.
+- View appointment and payment history.
+
+**Admin**
+- Manage salon services.
+- Manage appointment requests.
+- Manage registered customers.
+- Monitor transactions.
+- Access the Admin Dashboard.
+
+---
+
+# 02. Technology Stack
+
+Use the following technologies:
+
+| Technology | Purpose |
+|---|---|
+| Next.js | Frontend Framework |
+| TypeScript / JavaScript | Programming Language |
+| Node.js | Backend Runtime |
+| Express.js | Backend Framework |
+| MongoDB | Database |
+| Mongoose | ODM (Optional) |
+| Better Auth | Authentication |
+| JWT | API Authentication and Verification |
+| REST API | Client-Server Communication |
+| Stripe | Online Payments |
+| ImgBB | Image Hosting |
+
+TypeScript is preferred but optional according to the original assignment.
+
+---
+
+# 03. Project Structure and Routes
+
+## 3.1 Public Routes
+
+- Home
+- Browse Services
+- Sign In
+- Sign Up
+
+## 3.2 Protected Routes
+
+- Service Details: `/services/[id]`
+- Dashboard
+
+Unauthenticated users must be redirected to the Sign In page when accessing protected routes.
+
+## 3.3 Customer Dashboard
+
+- Overview
+- My Appointments
+- My Profile
+
+## 3.4 Admin Dashboard
+
+- Overview
+- Manage Services
+- Add / Update Service
+- Manage Appointments
+- Manage Users
+- Transactions
+- My Profile
+
+## 3.5 Role-Based Access
+
+- Admin users can access only the Admin Dashboard.
+- Customer users can access only the Customer Dashboard.
+- Users must not access another role's dashboard by manually changing the URL.
+- Role verification must be enforced on the server, not only on the frontend.
+
+---
+
+# 04. Public Website Requirements
+
+## 4.1 Navbar
+
+**Brand Name:** SalonBook
+
+### Public Navigation
+
+- Home
+- Browse Services
+- Sign In
+- Sign Up
+
+### Authenticated Navigation
+
+- Home
+- Salon / Service Details Page
+- Dashboard (based on user role)
+
+### Profile Dropdown
+
+- User Name
+- Dashboard
+- Logout
+
+### Navbar Rules
+
+- Navbar content must update immediately after authentication state changes.
+- Dashboard navigation must depend on the authenticated user's role.
+- Follow the approved design system for visual implementation.
+
+## 4.2 Footer
+
+The Footer must contain:
+
+- Logo and Short Description
+- Important Navigation Links
+- Salon Contact Information
+- Salon Address and Opening Hours
+- Social Media Links
+- Copyright Information
+
+## 4.3 Home Page
+
+### A. Banner Section
+
+Include:
+
+- Title
+- Short Description
+- CTA Button: Explore Salon Services
+- Salon-Themed Background Image
+
+### B. Featured Salon Services
+
+Display at least 6 services from the database.
+
+Only active services should be displayed.
+
+Each service card should contain:
+
+- Service Image
+- Service Name
+- Category
+- Price
+- Duration
+- Short Description
+- View Details Button
+
+### C. Salon Service Categories
+
+Display service categories so users can explore services by category.
+
+Example categories:
+
+- Haircut & Styling
+- Hair Coloring
+- Hair Treatment
+- Facial & Skincare
+- Makeup
+- Manicure & Pedicure
+- Spa & Massage
+
+### D. Additional Section
+
+Implement at least one additional static or dynamic section based on your own idea.
+
+Similar platforms may be used for inspiration, but do not copy their designs or complete features.
+
+## 4.4 Browse Services Page
+
+This is a public page where users can explore salon services without logging in.
+
+Requirements:
+
+- Display active services from the database.
+- Use a responsive card layout.
+- Show service information clearly.
+
+Service card information:
+
+- Service Image
+- Service Name
+- Category
+- Price
+- Duration
+- Short Description
+- View Details Button
+
+### Search, Filter and Sorting
+
+- Search services by name.
+- Filter services by category.
+- Sort services by price.
+
+## 4.5 Service Details Page
+
+**Route:** `/services/[id]`
+
+This is a protected page.
+
+Display:
+
+- Service Name
+- Service Image
+- Category
+- Description
+- Price
+- Estimated Duration
+- Appointment Booking Option
+
+### Rules
+
+- Customers must be authenticated to submit appointment requests.
+- Admins cannot submit customer appointment requests.
+- Invalid service IDs must show an appropriate error message.
+- Only active services are available for appointment booking.
+
+---
+
+# 05. Authentication and Authorization
+
+Use Better Auth.
+
+## 5.1 Sign Up
+
+### Fields
+
+- Full Name
+- Email
+- Password
+- Profile Image (Image Upload / Image URL)
+
+### Password Rules
+
+- Minimum 6 characters.
+- At least one uppercase letter.
+- At least one lowercase letter.
+
+### Features
+
+- Email and Password Registration.
+- Google Authentication.
+- Success and Error Messages.
+- Redirect to the appropriate page after registration.
+
+### Security Rules
+
+- Admin accounts must not be created through public registration.
+- Admin access must be assigned securely.
+
+## 5.2 Sign In
+
+### Fields
+
+- Email
+- Password
+
+### Features
+
+- Credential Login.
+- Google Login.
+- Success and Error Messages.
+- Redirect users according to their roles after login.
+
+## 5.3 Protected Routes
+
+- Protect all dashboard routes.
+- Only Admin can access the Admin Dashboard.
+- Only Customers can access the Customer Dashboard.
+- Unauthenticated users must be redirected to Sign In.
+- Blocked users must not access protected platform features.
+
+**Important:** Server-side role verification is mandatory. Hiding dashboard links on the frontend is not sufficient.
+
+---
+
+# 06. Customer Dashboard
+
+Create a separate dashboard layout with a sidebar and main content area.
+
+Navigation must depend on the authenticated user's role.
+
+## 6.1 Dashboard Overview
+
+Display:
+
+- Total Appointment Requests
+- Pending Appointments
+- Confirmed Appointments
+- Cancelled Appointments
+
+## 6.2 My Appointments
+
+Display all appointment requests submitted by the logged-in customer.
+
+### Appointment Information
+
+- Service Name and Image
+- Service Category
+- Appointment Date
+- Appointment Time
+- Service Price
+- Appointment Status
+- Payment Status
+- Appointment Request Date
+
+### Customer Actions
+
+- View Appointment Details
+- Cancel Pending Appointment Requests
+- Pay for Confirmed Appointments
+- View Payment Status
+
+### Rules
+
+- Customers can only view their own appointments.
+- Customers cannot cancel an already confirmed or cancelled appointment.
+- Customers cannot pay for cancelled or pending appointments.
+
+## 6.3 My Profile
+
+Customers can update permitted profile information.
+
+Follow the Profile Management requirements in Section 10.
+
+---
+
+# 07. Admin Dashboard
+
+## 7.1 Dashboard Overview
+
+Display:
+
+- Total Registered Customers
+- Total Active Services
+- Total Appointment Requests
+- Pending Appointments
+- Confirmed Appointments
+- Total Successful Payments
+
+## 7.2 Manage Services
+
+Admin can:
+
+- View All Services
+- Add New Services
+- Update Service Information
+- Delete Services
+- Activate Services
+- Deactivate Services
+
+Only active services should be visible on the public Browse Services page and available for booking.
+
+### Add / Update Service
+
+Fields:
+
+- Service Name
+- Service Category
+- Description
+- Price
+- Estimated Duration (in minutes)
+- Service Image (Image Upload; Not Image URL)
+- Service Status (Active / Inactive)
+
+**Default Service Status:** Active
+
+### Rules
+
+- Only Admin can create, update, or delete services.
+- Price must be a positive number.
+- Duration must be a positive number.
+- Service images must be uploaded, not entered as image URLs.
+
+**Database:** `services` Collection
+
+## 7.3 Manage Appointments
+
+Admin can:
+
+- View All Appointment Requests
+- View Appointment Details
+- Confirm Pending Appointments
+- Cancel Pending or Confirmed Appointments
+
+### Display Information
+
+- Customer Information
+- Service Information
+- Appointment Date and Time
+- Customer Message (if provided)
+- Service Price
+- Appointment Status
+- Payment Status
+- Booking Request Date
+
+### Rules
+
+- Only pending appointments can be confirmed.
+- Admin can manage all appointments.
+
+## 7.4 Manage Users
+
+Admin can:
+
+- View All Registered Customers
+- View User Details
+- Block User
+- Unblock User
+
+Blocked users must not be able to access protected platform features.
+
+## 7.5 Transactions
+
+Display:
+
+- Customer Information
+- Related Service
+- Appointment Date
+- Payment Amount
+- Currency
+- Stripe Checkout Session ID (or shortened reference)
+- Payment Status
+- Transaction Date
+
+### Security Rule
+
+Admin must not be able to modify payment records manually to mark an unsuccessful payment as successful.
+
+---
+
+# 08. Appointment Booking System
+
+Appointment booking takes place on the Service Details Page.
+
+When a customer selects the booking option, display an appointment form.
+
+## 8.1 Appointment Form
+
+Fields:
+
+- Appointment Date
+- Available Time Slot (use a simple predefined list of time slots)
+- Additional Message (Optional)
+
+**Database:** `appointments` Collection
+
+## 8.2 Default Values
+
+- Appointment Status: `pending`
+- Payment Status: `unpaid`
+
+## 8.3 Appointment Status Values
+
+- `pending`
+- `confirmed`
+- `cancelled`
+
+## 8.4 Payment Status Values
+
+- `unpaid`
+- `paid`
+
+## 8.5 Appointment Rules
+
+- Only authenticated Customers can submit appointment requests.
+- Prevent booking inactive services.
+- Prevent duplicate active appointments for the same date and time slot.
+- A customer can cancel only their own pending appointment requests.
+- Admin can confirm or cancel appointment requests.
+- Show appropriate success and error messages.
+
+---
+
+# 09. Payment System
+
+Customers can pay for confirmed salon appointments through Stripe.
+
+## 9.1 Payment Flow
+
+1. Customer submits an appointment request.
+2. The appointment is saved with `pending` status and `unpaid` payment status.
+3. Admin reviews and confirms the appointment.
+4. Customer opens the Customer Dashboard.
+5. Customer navigates to My Appointments and clicks Pay Now.
+6. Customer is redirected to Stripe Checkout.
+7. After successful payment, Stripe redirects the customer to the Payment Success page.
+8. If payment is cancelled, Stripe redirects the customer to the Payment Cancel page.
+9. A verified Stripe webhook updates payment status to `paid` and saves the transaction.
+
+## 9.2 Payment Success Page
+
+After successful payment:
+
+- Show payment confirmation.
+- Save the transaction.
+- Update payment status only after verified payment confirmation.
+
+**Database:** `transactions` Collection
+
+## 9.3 Payment Security
+
+- Use Stripe Checkout.
+- Verify Stripe webhook events.
+- Payment status must only be updated after a verified webhook event.
+- Never trust the frontend success redirect as proof of payment.
+- Admin must not manually mark an unsuccessful payment as successful.
+
+---
+
+# 10. Profile Management
+
+Both Customers and Admins can update permitted profile information.
+
+## 10.1 Editable Information
+
+- Name
+- Profile Image (Image Upload / Image URL)
+- Other Basic Editable Profile Information (for example, phone number)
+
+## 10.2 Rules
+
+- Show appropriate success and error messages.
+- Users must not be able to change their own role through profile updates.
+- Users must not be able to change their blocked status through profile updates.
+- Users must not be able to update another user's profile.
+
+---
+
+# 11. Loading, Error Handling and Notifications
+
+## 11.1 Loading States
+
+Show meaningful loading indicators while:
+
+- Fetching Services
+- Loading Dashboard Data
+- Creating Appointment Requests
+- Processing Payments
+
+## 11.2 Error Handling
+
+Implement proper error handling for:
+
+- Invalid Routes
+- Failed API Requests
+- Invalid Form Submissions
+- Unauthorized Access
+- Failed Image Uploads
+- Appointment Booking Conflicts
+- Failed or Cancelled Payments
+
+## 11.3 Notifications
+
+- Use toast notifications for successful and unsuccessful actions.
+- Do not use browser `alert()` for normal application feedback.
+
+---
+
+# 12. UI and Design Requirements
+
+## 12.1 General UI Requirements
+
+- Responsive on Desktop, Tablet, and Mobile.
+- Professional Salon-Themed Interface.
+- Clean and welcoming visual design.
+- Consistent Spacing, Typography, and Colors.
+- Reusable Components.
+- Avoid Unnecessary Animations and Visual Clutter.
+- All Buttons and Navigation Links Must Work Correctly.
+
+Use clear service cards, appointment status badges, and confirmation dialogs where appropriate.
+
+**Design Reference:** Follow `docs/design-system.md` for the approved SalonBook visual identity and UI rules.
+
+## 12.2 Dashboard UI Requirements
+
+- Sidebar Navigation
+- Main Content Area
+- Responsive Layout
+- Role-Based Navigation
+- Statistics Cards
+- Tables or Lists for Services, Appointments, Users, and Transactions
+- Consistent Theme
+
+---
+
+# 13. Challenge Requirements
+
+These are additional mandatory requirements.
+
+## CH-01: Search
+
+Implement search by service name on any page.
+
+## CH-02: JWT Verification
+
+Implement proper JWT verification middleware on the Express backend.
+
+## CH-03: Sorting
+
+Implement sorting by service price on any page.
+
+---
+
+# 14. Database Architecture
+
+Use MongoDB.
+
+Better Auth manages its own authentication-related collections.
+
+Use the following four main collections and proper references between collections. Do not create unnecessary collections for the same information.
+
+## 14.1 Users Collection
+
+**Managed by:** Better Auth
+
+Fields:
+
+- `name`
+- `email`
+- `image`
+- `role`
+- `isBlocked`
+
+## 14.2 Services Collection
+
+Fields:
+
+- `serviceName`
+- `category`
+- `description`
+- `price`
+- `duration`
+- `image`
+- `status` (`active` or `inactive`)
+- `createdAt`
+
+## 14.3 Appointments Collection
+
+Fields:
+
+- `serviceId`
+- `customerId`
+- `appointmentDate`
+- `timeSlot`
+- `message`
+- `servicePrice`
+- `paymentStatus` (`unpaid` or `paid`)
+- `status` (`pending`, `confirmed`, or `cancelled`)
+- `createdAt`
+
+## 14.4 Transactions Collection
+
+Fields:
+
+- `appointmentId`
+- `customerId`
+- `amount`
+- `currency`
+- `stripeSessionId`
+- `status` (`paid` or `failed`)
+- `createdAt`
+
+Maintain proper references between collections.
+
+Do not create duplicate collections for information already managed by Better Auth.
+
+---
+
+# 15. Security and Environment Variables
+
+Keep all sensitive information in environment variables.
+
+Required environment configuration includes:
+
+- MongoDB Connection String
+- Better Auth Secret and Configuration
+- Google OAuth Credentials
+- Stripe Secret Key
+- Stripe Webhook Secret
+- ImgBB API Key
+- Required Application URLs
+
+### Security Rules
+
+- Never push `.env` files or secret credentials to GitHub.
+- Use secure Better Auth configuration.
+- Use server-side role verification on all protected APIs.
+- Verify JWT tokens on the Express backend.
+- Protect user and appointment data from unauthorized access.
+- Prevent customers from modifying other customers' data.
+- Prevent users from changing their own role or blocked status.
+
+---
+
+# 16. README Requirements
+
+Both client and server repositories must contain a README file.
+
+Each README must include:
+
+- Project Name and Description
+- Important Features
+- Technology Stack
+- Installation Instructions
+- How to Run the Project Locally
+- Required Environment Variables (names only, never actual secret values)
+- Live Website Link
+- Client and Server Repository Links
+
+---
+
+# 17. GitHub and Submission Requirements
+
+## 17.1 Repository Requirements
+
+- Separate GitHub repositories for Client and Server.
+- Minimum 20 meaningful client-side commits.
+- Minimum 12 meaningful server-side commits.
+- Use meaningful commit messages.
+- Include README files in both repositories.
+
+## 17.2 Code Quality
+
+- Fully responsive design.
+- Professional UI/UX.
+- No copied projects.
+- Proper error handling.
+- Server-side role verification on all protected APIs.
+- Payment status must only be updated after a verified Stripe webhook event.
+- No production route reload issues.
+
+---
+
+# 18. Deployment Requirements
+
+The live application must work correctly.
+
+Verify:
+
+- No CORS Issues.
+- No 404 Issues.
+- No 504 Issues.
+- Reloading any route must not throw errors.
+- Private routes must work after page refresh.
+- Logged-in users must remain authenticated.
+- Stripe Checkout must work on the live site.
+- Stripe webhook flow must work on the live site.
+- Admin credentials provided for evaluation must work on the live site.
+
+---
+
+# 19. Final Development Guidelines
+
+Follow these requirements throughout development:
+
+1. Read the complete assignment before starting.
+2. Plan the database structure before developing APIs.
+3. Keep client and server code organized.
+4. Use meaningful Git commits throughout development.
+5. Build and test one feature at a time.
+6. Test authentication and role permissions with separate Admin and Customer accounts.
+7. Test image uploading before integrating it into every form.
+8. Complete and test the Stripe test-mode flow before deployment.
+9. Deploy the application before the deadline. Do not leave deployment until the last moment.
+
+Follow `docs/development-guidelines.md` for detailed coding and implementation rules.
+
+---
+
+# 20. Final Testing Checklist
+
+Before submission, verify the following:
+
+- [ ] Test all major features.
+- [ ] Verify all role-based permissions.
+- [ ] Test service creation, update, and deletion using an Admin account.
+- [ ] Test appointment requests using a Customer account.
+- [ ] Test appointment confirmation and cancellation using an Admin account.
+- [ ] Verify customers can view and manage only their own appointments.
+- [ ] Test Stripe Checkout using test credentials.
+- [ ] Verify the Stripe webhook updates payment status correctly.
+- [ ] Verify the application works after deployment.
+- [ ] Ensure no sensitive environment variables are exposed.
+
+---
+
+# 21. What To Submit
+
+Provide the following information for evaluation.
+
+## Admin Credentials
+
+**Admin Email:**
+
+**Admin Password:**
+
+## Deployment
+
+**Live Site Link:**
+
+## GitHub Repositories
+
+**Server Repository:**
+
+**Client Repository:**
+
+---
+
+# 22. UI/UX Inspiration
+
+The following platforms may be used for UI/UX inspiration only:
+
+- Fresha
+- Booksy
+- Vagaro
+
+Do not copy their designs or complete features.
+
+---
+
+# Important Project Documentation
+
+This assignment document defines the project's functional requirements.
+
+Use the other project documents for their specific purposes:
+
+| Document | Purpose |
+|---|---|
+| `docs/assignment.txt` | Project requirements and evaluation criteria |
+| `docs/design-system.md` | Approved visual design and UI rules |
+| `docs/development-guidelines.md` | Coding standards and development workflow |
+| `AGENTS.md` | Instructions for the coding agent and documentation references |
+
+**Important:** These documents have separate responsibilities. Do not duplicate their full contents into one another.
+
+The assignment requirements must remain the source of truth for what the application needs to do.
