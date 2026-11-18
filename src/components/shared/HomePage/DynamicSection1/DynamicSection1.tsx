@@ -26,8 +26,8 @@ const playfair = Playfair_Display({
 
 
 export async function DynamicSection1() {
-    const response = await featuredServices
-    const data:Service[] = response;
+    const response = await featuredServices()
+    const data:Service[] = response
   return (
     <section
       aria-labelledby="featured-services-heading"
@@ -54,7 +54,7 @@ export async function DynamicSection1() {
 
         <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
           {data.map((service) => (
-            <li key={service.id} className="flex">
+            <li key={service._id} className="flex">
               <ServiceCard service={service} />
             </li>
           ))}

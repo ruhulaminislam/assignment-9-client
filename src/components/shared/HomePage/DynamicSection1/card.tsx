@@ -46,7 +46,7 @@ export function formatDuration(minutes: number) {
       <div className="relative aspect-[4/3] overflow-hidden bg-[#EFE7DD]">
         <Image
           src={service.image}
-          alt={`${service.name} service at SalonBook`}
+          alt={`${service.serviceName} service at SalonBook`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
@@ -61,7 +61,7 @@ export function formatDuration(minutes: number) {
         <h3
           className={`${playfai.className } mt-3 text-xl leading-snug font-medium text-[#292824]`}
         >
-          {service.name}
+          {service.serviceName}
         </h3>
 
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#625D56]">
@@ -74,12 +74,12 @@ export function formatDuration(minutes: number) {
           </p>
           <p className="inline-flex items-center gap-1.5 text-sm text-[#625D56]">
             <Clock aria-hidden="true" className="size-4 text-[#A58B73]" />
-            {formatDuration(service.durationMinutes)}
+            {formatDuration(service.duration)}
           </p>
         </div>
 
         <Button
-          render={<Link href={`/services/${service.id}`} />}
+          render={<Link href={`/services/${service._id}`} />}
           variant="outline"
           className="mt-4 h-10 w-full rounded-lg border-[#A58B73] bg-transparent text-sm font-medium text-[#292824] hover:bg-[#F7F3EE] hover:text-[#292824] focus-visible:border-[#A58B73] focus-visible:ring-[#292824]/30"
         >

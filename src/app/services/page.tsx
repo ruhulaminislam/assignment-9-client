@@ -1,8 +1,7 @@
 import ServiceCard from "@/components/shared/HomePage/DynamicSection1/card";
-import { Input } from "@/components/ui/input";
-import { featuredServices } from "@/data/services";
-import { ChevronDown, Search } from "lucide-react";
+import { featuredServices,  Service } from "@/data/services";
 import { Inter, Playfair_Display } from "next/font/google";
+import ServiceFilters from "./ServiceFilters";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,11 +13,31 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const categories = Array.from(
-  new Set(featuredServices.map((service) => service.category)),
-);
+type SearchParams = Promise<{
+  search?: string;
+  category?: string;
+  sort?: string;
+}>;
 
-export default function BrowseServicesPage() {
+export default async function BrowseServicesPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { search, category, sort } = await searchParams;
+
+  const query = new URLSearchParams();
+  if (search) query.set("search", search);
+  if (category) query.set("category", category);
+  if (sort) query.set("sort", sort);
+
+  // filter + sort করা data
+  const services: Service[] = await featuredServices(query.toString());
+
+  // dropdown-এর জন্য সব category (filter ছাড়া), duplicate বাদ দিয়ে
+  const allServices: Service[] = await featuredServices();
+  const categoryNames = [...new Set(allServices.map((s) => s.category))];
+
   return (
     <section
       aria-labelledby="browse-services-heading"
@@ -43,93 +62,11 @@ export default function BrowseServicesPage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-2xl bg-white p-4 ring-1 ring-[#D8C5B2]/70 sm:p-5 lg:mt-12">
-          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_12rem_12rem] md:items-end">
-            <div className="space-y-2">
-              <label
-                htmlFor="service-search"
-                className="block text-xs font-medium tracking-[0.14em] text-[#625D56] uppercase"
-              >
-                Search Services
-              </label>
-
-              <div className="relative">
-                <Search
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-[#A58B73]"
-                  strokeWidth={1.75}
-                />
-                <Input
-                  id="service-search"
-                  name="search"
-                  type="search"
-                  placeholder="Search by service name"
-                  className="h-11 rounded-lg border-[#D8C5B2] bg-white pr-4 pl-10 text-sm text-[#292824] transition-colors placeholder:text-[#8A8178] hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25 md:text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="service-category"
-                className="block text-xs font-medium tracking-[0.14em] text-[#625D56] uppercase"
-              >
-                Category
-              </label>
-
-              <div className="relative">
-                <select
-                  id="service-category"
-                  name="category"
-                  defaultValue="all"
-                  className="h-11 w-full appearance-none rounded-lg border border-[#D8C5B2] bg-white pr-9 pl-3 text-sm text-[#292824] transition-colors outline-none hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25"
-                >
-                  <option value="all">All Categories</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[#A58B73]"
-                  strokeWidth={1.75}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="service-sort"
-                className="block text-xs font-medium tracking-[0.14em] text-[#625D56] uppercase"
-              >
-                Sort By Price
-              </label>
-
-              <div className="relative">
-                <select
-                  id="service-sort"
-                  name="sort"
-                  defaultValue="price-asc"
-                  className="h-11 w-full appearance-none rounded-lg border border-[#D8C5B2] bg-white pr-9 pl-3 text-sm text-[#292824] transition-colors outline-none hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25"
-                >
-                  <option value="price-asc">Low to High</option>
-                  <option value="price-desc">High to Low</option>
-                </select>
-                <ChevronDown
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[#A58B73]"
-                  strokeWidth={1.75}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <ServiceFilters categories={categoryNames} />
 
         <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-8">
-          {featuredServices.map((service) => (
-            <li key={service.id} className="flex">
+          {services.map((service) => (
+            <li key={service._id} className="flex">
               <ServiceCard service={service} />
             </li>
           ))}
