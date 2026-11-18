@@ -1,9 +1,13 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 import { Inter, Playfair_Display } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,6 +20,48 @@ const playfair = Playfair_Display({
 });
 
 export default function SignInPage() {
+  const router = useRouter();
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData) as {
+
+      email: string;
+      password: string;
+   
+    };
+
+    const { data: Resdata, error } = await authClient.signIn.email({
+
+      email: data.email,
+      password: data.password,
+  
+    });
+    console.log(Resdata, error);
+    if (Resdata?.token) {
+      toast.add({
+        type: "success",
+        description: " successfully!",
+      });
+      if (Resdata.user?.role === "admin") {
+        router.push("/dashboard/admin");
+      } else if (Resdata.user?.role === "user") {
+        router.push("/dashboard/user");
+      }
+    } else {
+      toast.add({
+        type: "error",
+        description: error?.message || "Failed to create account",
+      });
+    }
+  };
+    const signInWithGoogle = async () => {
+  const data = await authClient.signIn.social({
+    provider: "google",
+    callbackURL: "/auth/callback",
+  });
+ 
+};
   return (
     <section
       aria-labelledby="sign-in-heading"
@@ -74,7 +120,7 @@ export default function SignInPage() {
               Sign in to view your appointments and continue where you left off.
             </p>
 
-            <form className="mt-8 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
@@ -110,7 +156,7 @@ export default function SignInPage() {
               </div>
 
               <Button
-                type="button"
+                type="submit"
                 className="mt-2 h-12 w-full rounded-lg bg-[#292824] text-sm font-medium text-white transition-colors duration-200 hover:bg-[#292824]/90 focus-visible:ring-[#292824]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Sign In
@@ -133,6 +179,7 @@ export default function SignInPage() {
 
             <Button
               type="button"
+              onClick={signInWithGoogle}
               variant="outline"
               className="h-12 w-full rounded-lg border-[#D8C5B2] bg-white text-sm font-medium text-[#292824] transition-colors duration-200 hover:border-[#A58B73] hover:bg-[#F7F3EE] hover:text-[#292824] focus-visible:ring-[#A58B73]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >

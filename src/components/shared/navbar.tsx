@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Profile from "./profile";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -45,22 +46,10 @@ export function Navbar() {
   className="h-12 w-auto object-contain"
 />
 </Link>
-
-          <div className="flex items-center gap-2 lg:hidden">
-            <Button
-              render={<Link href="/sign-in" />}
-              variant="outline"
-              className={secondaryButtonClasses}
-            >
-              Sign In
-            </Button>
-            <Button
-              render={<Link href="/sign-up" />}
-              className={primaryButtonClasses}
-            >
-              Sign Up
-            </Button>
-          </div>
+         <div className="flex items-center gap-2 lg:hidden ">
+          <Profile />
+         </div>
+        
         </div>
 
         <nav aria-label="Main navigation" className="lg:flex lg:justify-center">
@@ -76,19 +65,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center justify-end gap-2 lg:flex">
-          <Button
-            render={<Link href="/sign-in" />}
-            variant="outline"
-            className={secondaryButtonClasses}
-          >
-            Sign In
-          </Button>
-          <Button
-            render={<Link href="/sign-up" />}
-            className={primaryButtonClasses}
-          >
-            Sign Up
-          </Button>
+         <Profile />
         </div>
       </div>
     </header>

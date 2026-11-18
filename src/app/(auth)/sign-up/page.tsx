@@ -1,9 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/toast";
+import { authClient } from "@/lib/auth-client";
 import { Inter, Playfair_Display } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useState } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,6 +22,59 @@ const playfair = Playfair_Display({
 });
 
 export default function SignUpPage() {
+  const [password, setPassword] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const hasMinLength = password.length >= 6;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+
+  const isPasswordValid = hasMinLength && hasUppercase && hasLowercase;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData) as {
+      name: string;
+      email: string;
+      password: string;
+      image: string | undefined;
+    };
+
+    if (!hasMinLength || !hasUppercase || !hasLowercase) {
+      setPasswordTouched(true);
+      return;
+    }
+
+    const { data: Resdata, error } = await authClient.signUp.email({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      image: data.image || undefined,
+    });
+    console.log(Resdata, error);
+    if (Resdata?.token) {
+      toast.add({
+        type: "success",
+        description: "Account created successfully!",
+      });
+      redirect("/");
+    } else {
+      toast.add({
+        type: "error",
+        description: error?.message || "Failed to create account",
+      });
+    }
+  };
+  const signInWithGoogle = async () => {
+  const data = await authClient.signIn.social({
+    provider: "google",
+  });
+  if(data?.url){
+     redirect("/");
+  }
+};
+
   return (
     <section
       aria-labelledby="sign-up-heading"
@@ -75,7 +134,7 @@ export default function SignUpPage() {
               ease.
             </p>
 
-            <form className="mt-8 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
                 <Label
                   htmlFor="full-name"
@@ -85,7 +144,7 @@ export default function SignUpPage() {
                 </Label>
                 <Input
                   id="full-name"
-                  name="fullName"
+                  name="name"
                   type="text"
                   autoComplete="name"
                   placeholder="Your full name"
@@ -117,22 +176,83 @@ export default function SignUpPage() {
                 >
                   Password
                 </Label>
+
                 <Input
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="new-password"
                   placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPasswordTouched(true);
+                  }}
+                  required
                   aria-describedby="password-hint"
                   className="h-12 rounded-lg border-[#D8C5B2] bg-white px-4 text-base text-[#292824] transition-colors placeholder:text-[#8A8178] hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25 md:text-base"
                 />
-                <p
+
+                <div
                   id="password-hint"
-                  className="text-xs leading-5 text-[#625D56]"
+                  className="space-y-1.5 text-xs leading-5"
                 >
-                  Use at least 6 characters with one uppercase and one lowercase
-                  letter.
-                </p>
+                  <p className="text-[#625D56]">Password must contain:</p>
+
+                  <p
+                    className={
+                      passwordTouched && !hasMinLength
+                        ? "text-red-600"
+                        : hasMinLength
+                          ? "text-green-600"
+                          : "text-[#8A8178]"
+                    }
+                  >
+                    {hasMinLength ? "✓" : passwordTouched ? "✕" : "○"} At least
+                    6 characters
+                    {passwordTouched &&
+                      !hasMinLength &&
+                      ` (You entered ${password.length})`}
+                  </p>
+
+                  <p
+                    className={
+                      passwordTouched && !hasUppercase
+                        ? "text-red-600"
+                        : hasUppercase
+                          ? "text-green-600"
+                          : "text-[#8A8178]"
+                    }
+                  >
+                    {hasUppercase ? "✓" : passwordTouched ? "✕" : "○"} One
+                    uppercase letter (A-Z)
+                    {passwordTouched &&
+                      !hasUppercase &&
+                      " — Please add an uppercase letter"}
+                  </p>
+
+                  <p
+                    className={
+                      passwordTouched && !hasLowercase
+                        ? "text-red-600"
+                        : hasLowercase
+                          ? "text-green-600"
+                          : "text-[#8A8178]"
+                    }
+                  >
+                    {hasLowercase ? "✓" : passwordTouched ? "✕" : "○"} One
+                    lowercase letter (a-z)
+                    {passwordTouched &&
+                      !hasLowercase &&
+                      " — Please add a lowercase letter"}
+                  </p>
+
+                  {passwordTouched && isPasswordValid && (
+                    <p className="font-medium text-green-600">
+                      ✓ Password meets all requirements.
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -144,7 +264,7 @@ export default function SignUpPage() {
                 </Label>
                 <Input
                   id="profile-image"
-                  name="profileImage"
+                  name="image"
                   type="url"
                   autoComplete="url"
                   placeholder="https://example.com/your-photo.jpg"
@@ -160,7 +280,7 @@ export default function SignUpPage() {
               </div>
 
               <Button
-                type="button"
+                type="submit"
                 className="mt-2 h-12 w-full rounded-lg bg-[#292824] text-sm font-medium text-white transition-colors duration-200 hover:bg-[#292824]/90 focus-visible:ring-[#292824]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Create Account
@@ -183,14 +303,11 @@ export default function SignUpPage() {
 
             <Button
               type="button"
+              onClick={signInWithGoogle}
               variant="outline"
               className="h-12 w-full rounded-lg border-[#D8C5B2] bg-white text-sm font-medium text-[#292824] transition-colors duration-200 hover:border-[#A58B73] hover:bg-[#F7F3EE] hover:text-[#292824] focus-visible:ring-[#A58B73]/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="size-4"
-              >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

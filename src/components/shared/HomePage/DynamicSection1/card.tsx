@@ -19,7 +19,7 @@ const playfai = Playfair_Display ({
 
 
 
-function formatPrice(price: number) {
+export function formatPrice(price: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -27,7 +27,7 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
-function formatDuration(minutes: number) {
+export function formatDuration(minutes: number) {
   if (minutes < 60) {
     return `${minutes} min`;
   }
