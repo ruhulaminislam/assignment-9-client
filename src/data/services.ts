@@ -19,7 +19,25 @@ export interface Service {
 }
 
 export const featuredServices = async (query:string="")=>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services?${query}`,{
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/public?${query}`,{
+    cache: "no-store"
+  });
+  const data = await response.json();
+  return data;
+}
+
+//get services by id
+const getServiceById =async(id:string)=>{
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/${id}`,{
+    cache: "no-store"
+  });
+  const data = await response.json();
+  return data;
+}
+
+//  get all services
+const getServices =async()=>{
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services`,{
     cache: "no-store"
   });
   const data = await response.json();

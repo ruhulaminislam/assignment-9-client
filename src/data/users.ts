@@ -17,3 +17,15 @@ export interface IUser {
     const data = await response.json();
     return data;
 }
+
+export const isBlockeds = async (id: string,isBlocked:boolean): Promise<IUser> => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/block/${id}`,{
+        method:"PATCH",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({isBlocked:isBlocked})
+    });
+    const data = await response.json();
+    return data;
+}

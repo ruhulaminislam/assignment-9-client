@@ -1,7 +1,6 @@
-export const ManageUsersPage = () => {
-  return (
-    <div>Manage Users Page</div>
-  )
-}
+import ManageUsersPage from "./manage-users-page";
 
-export default ManageUsersPage
+
+export default function Page() {
+  return <ManageUsersPage />;
+}
