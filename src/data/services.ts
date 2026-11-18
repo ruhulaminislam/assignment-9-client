@@ -36,9 +36,21 @@ const getServiceById =async(id:string)=>{
 }
 
 //  get all services
-const getServices =async()=>{
+export const getServices =async():Promise<Service[]>=>{
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services`,{
     cache: "no-store"
+  });
+  const data = await response.json();
+  return data;
+}
+
+export const addService = async (service: Service) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(service),
   });
   const data = await response.json();
   return data;
