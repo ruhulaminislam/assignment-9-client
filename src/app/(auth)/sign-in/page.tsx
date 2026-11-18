@@ -44,9 +44,9 @@ export default function SignInPage() {
         description: " successfully!",
       });
       if (Resdata.user?.role === "admin") {
-        router.push("/dashboard/admin");
+        router.push("/dashboards/admin/overview");
       } else if (Resdata.user?.role === "user") {
-        router.push("/dashboard/user");
+        router.push("/dashboards/user/overview");
       }
     } else {
       toast.add({

@@ -18,9 +18,9 @@ export default function AuthCallbackPage() {
     }
 
     if (session.user.role === "admin") {
-      router.replace("/dashboard/admin");
+      router.replace("/dashboards/admin/overview");
     } else if (session.user.role === "user") {
-      router.replace("/dashboard/user");
+      router.replace("/dashboards/user/overview");
     } else {
       router.replace("/login");
     }

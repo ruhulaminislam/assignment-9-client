@@ -46,7 +46,7 @@ export function Navbar() {
   className="h-12 w-auto object-contain"
 />
 </Link>
-         <div className="flex items-center gap-2 lg:hidden ">
+         <div className="flex items-center gap-2  lg:hidden ">
           <Profile />
          </div>
         
