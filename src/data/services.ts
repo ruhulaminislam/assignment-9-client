@@ -27,7 +27,7 @@ export const featuredServices = async (query:string="")=>{
 }
 
 //get services by id
-const getServiceById =async(id:string)=>{
+export const getServiceById =async(id:string)=>{
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/${id}`,{
     cache: "no-store"
   });
@@ -91,3 +91,4 @@ export const updateService = async (id: string, service: Service) => {
   const data = await response.json();
   return data;
 }
+

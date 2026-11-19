@@ -33,9 +33,10 @@ export default async function BrowseServicesPage({
 
   // filter + sort করা data
   const services: Service[] = await featuredServices(query.toString());
-
+    const filteredServices = services.filter((s) => s.status === "active");
   // dropdown-এর জন্য সব category (filter ছাড়া), duplicate বাদ দিয়ে
   const allServices: Service[] = await featuredServices();
+  
   const categoryNames = [...new Set(allServices.map((s) => s.category))];
 
   return (
@@ -65,7 +66,7 @@ export default async function BrowseServicesPage({
         <ServiceFilters categories={categoryNames} />
 
         <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-8">
-          {services.map((service) => (
+          {filteredServices.map((service) => (
             <li key={service._id} className="flex">
               <ServiceCard service={service} />
             </li>

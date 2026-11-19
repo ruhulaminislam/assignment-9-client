@@ -3,12 +3,20 @@ import {
   formatPrice,
 } from "@/components/shared/HomePage/DynamicSection1/card";
 import { Button } from "@/components/ui/button";
-import { featuredServices } from "@/data/services";
+
 import { ArrowLeft, CalendarPlus, Clock } from "lucide-react";
 import { Inter, Playfair_Display } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
+import { getServiceById, Service } from "@/data/services";
+
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import Appointment from "./appointment";
+import { toast } from "@/components/ui/toast";
+
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,11 +36,19 @@ export default async function ServiceDetailsPage({
   params,
 }: ServiceDetailsPageProps) {
   const { id } = await params;
-  const service = featuredServices.find((item) => item.id === id);
-
-  if (!service) {
-    notFound();
+  const session = await auth.api.getSession({
+    headers: await headers() // you need to pass the headers object.
+})
+  if(!session?.user){
+    redirect('/sign-in')
   }
+  if(session?.user?.isBlocked===true){
+     
+     redirect('/other/blocked')
+  }
+ 
+  const service:Service =await  getServiceById(id);
+ 
 
   return (
     <section
@@ -57,7 +73,7 @@ export default async function ServiceDetailsPage({
             <div className="relative aspect-[4/3] bg-[#EFE7DD] sm:aspect-[16/9] lg:aspect-auto lg:min-h-[30rem]">
               <Image
                 src={service.image}
-                alt={`${service.name} service at SalonBook`}
+                alt={`${service.serviceName} service at SalonBook`}
                 fill
                 priority
                 sizes="(min-width: 1024px) 55vw, 100vw"
@@ -74,7 +90,7 @@ export default async function ServiceDetailsPage({
                 id="service-details-heading"
                 className={`${playfair.className} mt-4 text-3xl leading-[1.12] font-medium tracking-tight text-balance text-[#292824] sm:text-4xl lg:text-[2.75rem]`}
               >
-                {service.name}
+                {service.serviceName}
               </h1>
 
               <p className="mt-4 text-base leading-7 text-[#625D56] sm:text-lg sm:leading-8">
@@ -101,22 +117,12 @@ export default async function ServiceDetailsPage({
                       className="size-4 text-[#A58B73]"
                       strokeWidth={1.75}
                     />
-                    {formatDuration(service.durationMinutes)}
+                    {formatDuration(service.duration)}
                   </dd>
                 </div>
               </dl>
 
-              <Button
-                type="button"
-                className="mt-8 h-12 w-full rounded-lg bg-[#292824] text-sm font-medium text-white transition-colors duration-200 hover:bg-[#292824]/90 focus-visible:ring-[#292824]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              >
-                <CalendarPlus
-                  aria-hidden="true"
-                  className="size-4"
-                  strokeWidth={1.75}
-                />
-                Book Appointment
-              </Button>
+              <Appointment serviceId={service._id} service={service} />
             </div>
           </div>
         </div>

@@ -31,8 +31,21 @@ export const isBlockeds = async (id: string,isBlocked:boolean): Promise<IUser> =
 }
 
 //updat admin profile
-export const updateAdminProfile = async (id: string, data: any): Promise<IUser> => {
+export const updateAdminProfile = async (id: string, data: string): Promise<IUser> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/update-admin/${id}`,{
+        method:"PATCH",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data)
+    });
+    const result = await response.json();
+    return result;
+}
+
+//update user profile
+export const updateUserProfile = async (id: string, data: string): Promise<IUser> => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/update-user/${id}`,{
         method:"PATCH",
         headers:{
             "Content-Type":"application/json"
