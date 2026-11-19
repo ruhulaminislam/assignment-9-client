@@ -55,3 +55,39 @@ export const addService = async (service: Service) => {
   const data = await response.json();
   return data;
 }
+
+//delete service
+export const deleteService = async (id: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/delete/${id}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+  return data;
+}
+
+//service status toggle
+export const toggleServiceStatus = async (id: string, status: ServiceStatus) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/status/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+  const data = await response.json();
+  return data;
+}
+
+
+//update service
+export const updateService = async (id: string, service: Service) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/update/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(service),
+  });
+  const data = await response.json();
+  return data;
+}

@@ -127,10 +127,12 @@ const handleRemoveImage = () => {
       duration: Number(values.duration),
       // The image URL is attached only after a real ImgBB upload.
       image: previewUrl || "",
-      status: values.status as ServiceStatus,
+      status: "active",
       createdBy: admin?.id ?? "",
       createdByEmail: admin?.email ?? "",
       createdByName: admin?.name ?? "",
+      createdAt: new Date(),
+         updatedAt: new Date(),
     };
   
     console.log("Prepared service:", preparedService);
@@ -259,7 +261,7 @@ const handleRemoveImage = () => {
             </div>
           </div>
 
-          <fieldset className="space-y-2">
+          {/* <fieldset className="space-y-2">
             <legend className={labelClasses}>Service Status</legend>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -298,7 +300,7 @@ const handleRemoveImage = () => {
                 </span>
               </label>
             </div>
-          </fieldset>
+          </fieldset> */}
         </div>
       </div>
 

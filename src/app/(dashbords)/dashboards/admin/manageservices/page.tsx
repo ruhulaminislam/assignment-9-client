@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/table";
 import { getServices, type Service } from "@/data/services";
 import Link from "next/link";
+import ServiceActions from "./ServiceActions";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ const playfair = Playfair_Display({
 });
 
 function formatDate(value: string) {
+    if (!value) return "N/A";
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -66,76 +68,7 @@ function StatusBadge({ status }: { status: Service["status"] }) {
   );
 }
 
-function ServiceActions({
-  service,
-  withLabels = false,
-}: {
-  service: Service;
-  withLabels?: boolean;
-}) {
-  const isActive = service.status === "active";
 
-  const wrapperClasses = withLabels
-    ? "flex flex-wrap items-center gap-1"
-    : "flex items-center overflow-hidden rounded-lg border border-[#D8C5B2]/70 bg-white";
-
-  const buttonClasses = withLabels
-    ? "h-8 gap-1.5 rounded-lg border border-[#D8C5B2]/70 bg-white px-2 text-xs"
-    : "size-8 rounded-none border-l-[#D8C5B2]/60 px-0 first:border-l-transparent";
-
-  const focusClasses =
-    "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#292824]/40";
-
-  return (
-    <div className={wrapperClasses}>
-      <Button
-        type="button"
-        variant="ghost"
-        aria-label={`Edit ${service.serviceName}`}
-        title="Edit service"
-        className={`${buttonClasses} ${focusClasses} text-[#625D56] hover:bg-[#F7F3EE] hover:text-[#292824]`}
-      >
-        <Pencil aria-hidden="true" strokeWidth={1.75} />
-        {withLabels ? "Edit" : null}
-      </Button>
-
-      {isActive ? (
-        <Button
-          type="button"
-          variant="ghost"
-          aria-label={`Deactivate ${service.serviceName}`}
-          title="Deactivate service"
-          className={`${buttonClasses} ${focusClasses} text-[#625D56] hover:bg-[#FBE9E7] hover:text-[#B94343]`}
-        >
-          <Ban aria-hidden="true" strokeWidth={1.75} />
-          {withLabels ? "Deactivate" : null}
-        </Button>
-      ) : (
-        <Button
-          type="button"
-          variant="ghost"
-          aria-label={`Activate ${service.serviceName}`}
-          title="Activate service"
-          className={`${buttonClasses} ${focusClasses} text-[#625D56] hover:bg-[#E6F3EA] hover:text-[#287A55]`}
-        >
-          <ShieldCheck aria-hidden="true" strokeWidth={1.75} />
-          {withLabels ? "Activate" : null}
-        </Button>
-      )}
-
-      <Button
-        type="button"
-        variant="ghost"
-        aria-label={`Delete ${service.serviceName}`}
-        title="Delete service"
-        className={`${buttonClasses} ${focusClasses} text-[#625D56] hover:bg-[#FBE9E7] hover:text-[#B94343]`}
-      >
-        <Trash2 aria-hidden="true" strokeWidth={1.75} />
-        {withLabels ? "Delete" : null}
-      </Button>
-    </div>
-  );
-}
 
 export const ManageServicesPage = async () => {
   const services = await getServices();
