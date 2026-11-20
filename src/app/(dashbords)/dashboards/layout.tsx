@@ -1,15 +1,25 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "../_components/app-sidebar"
+import { Navbar } from "@/components/shared/navbar"
+import { Footer } from "@/components/shared/footer"
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
+    <>
+  
+       
     <SidebarProvider>
       <AppSidebar />
       <main className="min-w-0 flex-1">
+        <Navbar />
         <SidebarTrigger />
+         
         {children}
+        <Footer />
       </main>
     </SidebarProvider>
+    
+      </>
   )
 }
