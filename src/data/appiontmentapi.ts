@@ -60,6 +60,7 @@ export const cancelAppointmentApi = async (id: string) => {
           headers: {
                'Content-Type': 'application/json',
           },
+          
      });
      return response.json();
 }

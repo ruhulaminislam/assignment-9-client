@@ -3,7 +3,7 @@ import { Eye, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cancelAppointmentApi, type IAppointment } from "@/data/appiontmentapi";
 import Link from "next/link";
-import PaymentCard from "@/app/paymentCard/page";
+import PaymentCard from "@/app/paymentCard/paymentCard";
 
 interface AppointmentActionsProps {
   appointment: IAppointment;
@@ -69,16 +69,7 @@ export function AppointmentActions({
       ) : null}
 
       {canPay ? (
-       <Button
-          type="button"
-          className={`rounded-lg bg-[#292824] font-medium text-white hover:bg-[#292824]/90 focus-visible:ring-[#292824]/40 ${
-            withLabels ? "h-9 px-3.5 text-xs" : "h-8 px-3 text-xs"
-          }`}
-        >
-        
-          <Link href="/paymentCard">Pay Now</Link>
-         
-        </Button>
+        <PaymentCard withLabels={withLabels} appointment={appointment} />
       ) : null}
     </div>
   );
