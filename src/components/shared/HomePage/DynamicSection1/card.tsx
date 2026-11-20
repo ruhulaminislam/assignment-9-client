@@ -42,7 +42,7 @@ export function formatDuration(minutes: number) {
 
  export default function ServiceCard({ service }: { service: Service }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-[#D8C5B2]/70 transition-shadow duration-300 hover:shadow-[0_22px_45px_-30px_rgba(41,40,36,0.45)]">
+    <article className="group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-[#D8C5B2]/70 transition-shadow duration-300 hover:shadow-[0_22px_45px_-30px_rgba(41,40,36,0.45)]">
       <div className="relative aspect-[4/3] overflow-hidden bg-[#EFE7DD]">
         <Image
           src={service.image}

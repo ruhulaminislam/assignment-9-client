@@ -15,7 +15,7 @@ export default function Home() {
     <DynamicSection1></DynamicSection1>
     <SalonServiceCategories></SalonServiceCategories>
     <AdditionalSections></AdditionalSections>
-    <Footer />
+   
    </div>
   );
 }

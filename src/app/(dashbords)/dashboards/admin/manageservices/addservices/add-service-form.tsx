@@ -29,6 +29,9 @@ const playfair = Playfair_Display({
  */
 type NewService = Omit<Service, "_id" | "createdAt" | "updatedAt">;
 
+// Special option value: it can never match a real category name.
+const ADD_NEW_CATEGORY = "__add_new__";
+
 const inputClasses =
   "h-12 rounded-lg border-[#D8C5B2] bg-white px-4 text-base text-[#292824] transition-colors placeholder:text-[#8A8178] hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25 md:text-base";
 
@@ -56,6 +59,10 @@ export default function AddServiceForm({ categories }: { categories: string[] })
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // Category: is the admin typing a brand new category?
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   // Release the object URL when it is replaced or the page unmounts.
   useEffect(() => {
@@ -113,15 +120,42 @@ const handleRemoveImage = () => {
   }
 };
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const isNew = event.target.value === ADD_NEW_CATEGORY;
+    setIsAddingNewCategory(isNew);
+
+    if (!isNew) {
+      setNewCategory("");
+    }
+  };
+
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const values = Object.fromEntries(formData);
 
+    // Pick the category source: typed text or the dropdown value.
+    const rawCategory = isAddingNewCategory
+      ? newCategory
+      : (values.category as string);
+
+    // "  Hair   Care " -> "Hair Care"
+    const cleanedCategory = rawCategory.trim().replace(/\s+/g, " ");
+
+    if (cleanedCategory === "") {
+      return;
+    }
+
+    // "hair" reuses the existing "Hair" instead of creating a duplicate.
+    const category =
+      categories.find(
+        (item) => item.toLowerCase() === cleanedCategory.toLowerCase()
+      ) ?? cleanedCategory;
+
     const preparedService: NewService = {
       serviceName: values.serviceName as string,
-      category: values.category as string,
+      category: category,
       description: values.description as string,
       price: Number(values.price),
       duration: Number(values.duration),
@@ -183,6 +217,7 @@ const handleRemoveImage = () => {
                 name="category"
                 required
                 defaultValue=""
+                onChange={handleCategoryChange}
                 className={selectClasses}
               >
                 <option value="" disabled>
@@ -193,6 +228,7 @@ const handleRemoveImage = () => {
                     {category}
                   </option>
                 ))}
+                <option value={ADD_NEW_CATEGORY}>+ Add new category</option>
               </select>
 
               <ChevronDown
@@ -201,6 +237,19 @@ const handleRemoveImage = () => {
                 strokeWidth={1.75}
               />
             </div>
+
+            {isAddingNewCategory ? (
+              <Input
+                id="new-category"
+                type="text"
+                value={newCategory}
+                onChange={(event) => setNewCategory(event.target.value)}
+                placeholder="e.g. Skin Care"
+                aria-label="New category name"
+                required
+                className={inputClasses}
+              />
+            ) : null}
           </div>
 
           <div className="space-y-2">

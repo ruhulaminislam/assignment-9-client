@@ -7,8 +7,12 @@ export default function Layouts({children}: {children: React.ReactNode}) {
   return (
     <>
     <Navbar />
-    <div>{children}</div>
-    <Footer />
+    
+    <div className="min-h-screen">
+      {children}
+      <Footer />
+    </div>
+    
     </>
   )
 }

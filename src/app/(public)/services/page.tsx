@@ -67,7 +67,7 @@ export default async function BrowseServicesPage({
 
         <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-8">
           {filteredServices.map((service) => (
-            <li key={service._id} className="flex">
+            <li key={service._id} className="flex ">
               <ServiceCard service={service} />
             </li>
           ))}
