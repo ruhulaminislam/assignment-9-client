@@ -14,8 +14,6 @@ export default function ServiceActions({
   service,
   withLabels = false,
 }: ServiceActionsProps) {
-  const isActive = service.status === "active";
-
   const wrapperClasses = withLabels
     ? "flex flex-wrap items-center gap-1"
     : "flex items-center overflow-hidden rounded-lg border border-[#D8C5B2]/70 bg-white";
@@ -39,7 +37,6 @@ export default function ServiceActions({
 
       <ToggleServiceStatusButton
         service={service}
-        isActive={isActive}
         className={sharedClasses}
         withLabels={withLabels}
       />

@@ -1,13 +1,13 @@
 "use client";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { deleteService } from "@/data/services";
+import { deleteService, type Service } from "@/data/services";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 
 interface DeleteServiceButtonProps {
-  serviceName: string;
-  className: string;
+  service: Service;
+  className?: string;
   withLabels?: boolean;
 }
 

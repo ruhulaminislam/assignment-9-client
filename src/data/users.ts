@@ -27,8 +27,16 @@ export const isBlockeds = async (id: string,isBlocked:boolean): Promise<IUser> =
     return response;
 }
 
+export interface IMongoUpdateResult {
+    acknowledged: boolean;
+    matchedCount: number;
+    modifiedCount: number;
+    upsertedCount: number;
+    upsertedId: unknown;
+}
+
 //updat admin profile
-export const updateAdminProfile = async (id: string, data: string): Promise<IUser> => {
+export const updateAdminProfile = async (id: string, data: Record<string, unknown>): Promise<IMongoUpdateResult> => {
     const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/update-admin/${id}`;
     const response = await allauthFetch(api,"PATCH",data);
     return response;
@@ -36,7 +44,7 @@ export const updateAdminProfile = async (id: string, data: string): Promise<IUse
 }
 
 //update user profile
-export const updateUserProfile = async (id: string, data: string): Promise<IUser> => {
+export const updateUserProfile = async (id: string, data: Record<string, unknown>): Promise<IMongoUpdateResult> => {
     const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/update-user/${id}`;
     const response = await allauthFetch(api,"PATCH",data);
     return response;

@@ -20,12 +20,12 @@ export interface Service {
 
 }
 //public services onle show active services
-export const featuredServices = async (query:string="")=>{
+export const featuredServices = async (query:string=""): Promise<Service[]>=>{
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/public?${query}`,{
     cache: "no-store"
   });
   const data = await response.json();
-  return data;
+  return data as Service[];
 }
 
 //get services by id
@@ -43,8 +43,11 @@ export const getServices =async():Promise<Service[]>=>{
    const response = await allauthFetch(api, "GET");
    return response;
 }
+// Service without the fields that are created by the server/database.
+export type NewService = Omit<Service, "_id" | "createdAt" | "updatedAt">
+
 //add service
-export const addService = async (service: Service) => {
+export const addService = async (service: NewService) => {
   const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services`;
   const response = await allauthFetch(api, "POST", service);
   return response;
@@ -67,7 +70,7 @@ export const toggleServiceStatus = async (id: string, status: ServiceStatus) => 
 
 
 //update service
-export const updateService = async (id: string, service: Service) => {
+export const updateService = async (id: string, service: Partial<Service>) => {
   const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/update/${id}`;
   const response = await allauthFetch(api, "PATCH", service);
   return response;

@@ -25,7 +25,7 @@ export interface IAppointment {
 //create appointment by user  
 export const appointmentApi =async (data: any) => {
      const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/appointments`;
-     const response = await allauthFetch(api, "POST", {data});
+     const response = await allauthFetch(api, "POST", data);
      return response;
 
 }

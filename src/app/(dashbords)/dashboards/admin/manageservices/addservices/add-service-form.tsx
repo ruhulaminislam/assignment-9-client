@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
-import { addService, type Service, type ServiceStatus } from "@/data/services";
+import { addService, type NewService } from "@/data/services";
 import { toast } from "@/components/ui/toast";
 import { redirect } from "next/navigation";
 
@@ -24,12 +24,6 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
 });
-
-/**
- * Service without the fields that are created by the server/database.
- * Keeps the prepared object aligned with the existing `Service` type.
- */
-type NewService = Omit<Service, "_id" | "createdAt" | "updatedAt">;
 
 // Special option value: it can never match a real category name.
 const ADD_NEW_CATEGORY = "__add_new__";
@@ -167,8 +161,6 @@ const handleRemoveImage = () => {
       createdBy: admin?.id ?? "",
       createdByEmail: admin?.email ?? "",
       createdByName: admin?.name ?? "",
-      createdAt: new Date(),
-         updatedAt: new Date(),
     };
   
     console.log("Prepared service:", preparedService);

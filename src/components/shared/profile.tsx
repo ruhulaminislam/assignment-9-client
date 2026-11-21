@@ -120,7 +120,7 @@ const Profile = () => {
 
             <DropdownMenuGroup>
               <DropdownMenuItem
-                render={<Link href={`/dashboards/${user?.role }/myprofile`} />}
+                render={<Link href={`/dashboards/${user?.role}/myprofile`} />}
                 className={menuItemClasses}
               >
                 <UserRound aria-hidden="true" strokeWidth={1.75} />

@@ -134,7 +134,7 @@ export default function EditServiceButton({
       price: Number(values.price),
       duration: Number(values.duration),
       image: imageUrl,
-      
+      status: service.status, // status editor is disabled; keep existing value
       updatedAt: new Date().toISOString(), // ✅ type string
     };
 

@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CircleAlert, Info, Save } from "lucide-react";
-import { updateAdminProfile, updateUserProfile } from "@/data/users";
-import { toast, Toast } from "@/components/ui/toast";
+import { updateAdminProfile } from "@/data/users";
+import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 
 const inputClasses =
-  "h-12 rounded-lg border-[#D8C5B2] bg-white px-4 text-base text-[#292824] transition-colors placeholder:text-[#8A8178] hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25 md:text-base";
+  "h-12 rounded-lg border-[#D8C5B2]  bg-white px-4 text-base text-[#292824] transition-colors placeholder:text-[#8A8178] hover:border-[#C4AC96] focus-visible:border-[#A58B73] focus-visible:ring-2 focus-visible:ring-[#A58B73]/25 md:text-base";
 
 export default function NameForm({
   currentName,
@@ -28,8 +28,8 @@ export default function NameForm({
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const values = Object.fromEntries(formData);
-    const nextName = String(values.name ?? "").trim();
+    const values = Object.fromEntries(formData) 
+    const nextName = String(values.name ?? "").trim() 
 
     if (nextName.length < 2) {
       setError("Enter a name with at least 2 characters.");
@@ -37,13 +37,13 @@ export default function NameForm({
     }
 
     setError(null);
-
+    
     // Ready for the PATCH endpoint. Later this becomes:
     // updateAdminProfile(userId, preparedUpdate)
     const preparedUpdate = { name: nextName };
      const response = await updateAdminProfile(userId, preparedUpdate);
     console.log(`Prepared profile update for ${userId}:`, response);
-    if (response.modifiedCount > 0) {
+    if (response.modifiedCount  > 0) {
      toast.add({
       title: "Success",
       description: "Profile name updated successfully",

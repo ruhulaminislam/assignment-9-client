@@ -67,13 +67,14 @@ export default function SignUpPage() {
     }
   };
   const signInWithGoogle = async () => {
-  const data = await authClient.signIn.social({
-    provider: "google",
-  });
-  if(data?.url){
-     redirect("/");
-  }
-};
+    const data = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/auth/callback",
+    });
+    if (data?.data?.url) {
+      window.location.href = data.data.url;
+    }
+  };
 
   return (
     <section
