@@ -6,7 +6,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { dummyAppointments } from "./appointments";
+
 import { AppointmentsSection } from "./appointments-section";
 import { inter, playfair } from "./fonts";
 import { getAllAppointmentsApi, IAppointment } from "@/data/appiontmentapi";
@@ -22,6 +22,7 @@ import { getAllAppointmentsApi, IAppointment } from "@/data/appiontmentapi";
 
 export default async function ManageAppointmentsPage() {
   const appointments:IAppointment[] =await  getAllAppointmentsApi();
+  console.log("appointments", appointments);
   const stats: {
   id: string;
   label: string;

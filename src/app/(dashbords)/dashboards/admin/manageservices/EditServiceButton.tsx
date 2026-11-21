@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { serviceCategories } from "@/data/categories";
 import { updateService, type Service, type ServiceStatus } from "@/data/services";
+import { toast } from "@/components/ui/toast";
 
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap" });
 
@@ -140,7 +141,17 @@ export default function EditServiceButton({
     try {
       const result = await updateService(service._id, updatedData);
       console.log("Update response:", result);
-
+      if(result.modifiedCount > 0){
+        toast.add({
+          title: "Service updated successfully",
+          description: "The service has been updated successfully",
+        });
+      }else{
+        toast.add({
+          title: "Service update failed",
+          description: "The service could not be updated. Please try again.",
+        });
+      }
       setOpen(false);
       router.refresh(); // ✅ list-এ নতুন data দেখানোর জন্য
     } catch (err) {
@@ -414,7 +425,7 @@ export default function EditServiceButton({
                 )}
                 {isSaving ? "Saving..." : "Save Changes"}
               </Button>
-            </DialogFooter>
+            </DialogFooter >
           </div>
         </form>
       </DialogContent>

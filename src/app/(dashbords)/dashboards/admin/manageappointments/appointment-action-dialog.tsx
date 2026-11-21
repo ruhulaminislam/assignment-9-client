@@ -25,6 +25,7 @@ import {
   type AppointmentStatus,
 } from "@/data/appiontmentapi";
 import { toast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 
 export type AppointmentAction = "confirm" | "cancel";
 
@@ -40,6 +41,7 @@ export function AppointmentActionDialog({
   request: PendingAppointmentAction | null;
   onClose: () => void;
 }) {
+  const router = useRouter();
   const appointment = request?.appointment;
   const isConfirm = request?.action === "confirm";
 
@@ -66,8 +68,9 @@ export function AppointmentActionDialog({
          toast.add({
           title: "Success",
           description: "Appointment status updated successfully",
-         
+           
          })
+         router.refresh();
        }else{
         toast.add({
           title: "Error",

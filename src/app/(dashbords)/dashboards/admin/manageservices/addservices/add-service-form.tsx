@@ -17,6 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
 import { addService, type Service, type ServiceStatus } from "@/data/services";
+import { toast } from "@/components/ui/toast";
+import { redirect } from "next/navigation";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -173,6 +175,21 @@ const handleRemoveImage = () => {
     console.log("Selected image file:", selectedFile);
     const addserviceapi=await addService(preparedService);
     console.log("Add service API response:", addserviceapi);
+    if(addserviceapi.insertedId){
+        toast.add({
+        title: "Service added successfully",
+        description: "The service has been added successfully",
+        
+        
+      })
+      redirect("/dashboards/admin/manageservices");
+    
+    }else{
+      toast.add({
+        title: "Service add failed",
+        description: "The service has not been added successfully",
+      })
+    }
   };
 
   return (
