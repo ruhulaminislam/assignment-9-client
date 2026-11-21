@@ -16,26 +16,28 @@ import {
 } from "@/components/ui/dialog";
 import type { IAppointment } from "@/data/appiontmentapi";
 
-import { formatDate } from "./appointment-helpers";
-import { serviceMeta } from "./appointments";
+import { formatDate, getServiceMeta } from "./appointment-helpers";
+
 import { inter, playfair } from "./fonts";
 
 export function CancelAppointmentDialog({
   appointment,
+  isCancelling = false,
   onClose,
   onConfirm,
 }: {
   appointment: IAppointment | null;
+  isCancelling?: boolean;
   onClose: () => void;
   onConfirm: (appointment: IAppointment) => void;
 }) {
-  const meta = appointment ? serviceMeta[appointment.serviceId] : undefined;
+  const meta = appointment ? getServiceMeta(appointment) : undefined;
 
   return (
     <Dialog
       open={Boolean(appointment)}
       onOpenChange={(open) => {
-        if (!open) {
+        if (!open && !isCancelling) {
           onClose();
         }
       }}
@@ -122,6 +124,7 @@ export function CancelAppointmentDialog({
                   <Button
                     type="button"
                     variant="outline"
+                    disabled={isCancelling}
                     className="h-10 w-full rounded-lg border-[#D8C5B2] bg-white px-4 text-sm font-medium text-[#292824] hover:border-[#A58B73] hover:bg-[#F7F3EE] sm:w-auto"
                   >
                     Keep Appointment
@@ -131,10 +134,11 @@ export function CancelAppointmentDialog({
 
               <Button
                 type="button"
+                disabled={isCancelling}
                 onClick={() => onConfirm(appointment)}
                 className="h-10 w-full rounded-lg bg-[#B94343] px-4 text-sm font-medium text-white hover:bg-[#B94343]/90 focus-visible:ring-[#B94343]/40 sm:w-auto"
               >
-                Cancel Appointment
+                {isCancelling ? "Cancelling..." : "Cancel Appointment"}
               </Button>
             </DialogFooter>
           </>

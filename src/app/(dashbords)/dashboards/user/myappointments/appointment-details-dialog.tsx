@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/dialog";
 import type { IAppointment } from "@/data/appiontmentapi";
 
-import { formatDate } from "./appointment-helpers";
-import { serviceMeta } from "./appointments";
+import { formatDate, getServiceMeta } from "./appointment-helpers";
+
 import { inter, playfair } from "./fonts";
 import {
   AppointmentStatusBadge,
@@ -54,7 +54,7 @@ export function AppointmentDetailsDialog({
   appointment: IAppointment | null;
   onClose: () => void;
 }) {
-  const meta = appointment ? serviceMeta[appointment.serviceId] : undefined;
+  const meta = appointment ? getServiceMeta(appointment) : undefined;
 
   return (
     <Dialog

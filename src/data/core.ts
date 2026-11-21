@@ -19,25 +19,32 @@ export const getToken=async()=>{
    }
    return session.session.token;
 }
-export const allauthFetch = async (api:string,method:string,data?:unknown) => {
- const token = await getToken();
- const response = await fetch(api, {
-    method:method,
+export const allauthFetch = async (
+  api: string,
+  method: string,
+  data?: unknown
+) => {
+  const token = await getToken();
+
+  const response = await fetch(api, {
+    method,
     headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-    body: data ? JSON.stringify(data) : null
- })
- if(response.status === 401 || response.status === 403){
+    ...(data !== undefined ? { body: JSON.stringify(data) } : {}),
+  });
+
+  if (response.status === 401 || response.status === 403) {
     redirect("/unauthorized");
- }
- return response.json();
-}
+  }
+
+  return response.json();
+};
 
 export const requiterole = async (role:string) => {
     const session = await getUserData();
-    if(!session || session.user.role !== role){
+    if(!session || session.user.role !==role){
         redirect("/unauthorized");
     }
     return session

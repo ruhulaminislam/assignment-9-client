@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getInitials } from "../../profile-utils";
 import { CircleAlert, ImageIcon, Info, Save } from "lucide-react";
-import { updateAdminProfile } from "@/data/users";
+import { updateAdminProfile, updateUserProfile } from "@/data/users";
 import { toast, Toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 
@@ -58,7 +58,7 @@ export default function ImageForm({
     // Ready for the PATCH endpoint. Later this becomes:
     // updateAdminProfile(userId, preparedUpdate)
     const preparedUpdate = { image: nextImage };
-    const response = await updateAdminProfile(userId, preparedUpdate);
+    const response = await updateUserProfile(userId, preparedUpdate);
     if(response.modifiedCount > 0){
       console.log(`Prepared profile update for ${userId}:`, response);
       toast.add({

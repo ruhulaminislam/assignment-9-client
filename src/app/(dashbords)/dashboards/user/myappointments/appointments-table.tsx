@@ -13,8 +13,8 @@ import {
 import type { IAppointment } from "@/data/appiontmentapi";
 
 import { AppointmentActions } from "./appointment-actions";
-import { formatDate } from "./appointment-helpers";
-import { serviceMeta } from "./appointments";
+import { formatDate, getServiceMeta } from "./appointment-helpers";
+
 import {
   AppointmentStatusBadge,
   PaymentStatusBadge,
@@ -30,12 +30,12 @@ const headClasses =
   "h-11 px-3 text-[11px] leading-tight font-medium tracking-[0.14em] text-[#625D56] uppercase";
 
 function ServiceIdentity({ appointment }: { appointment: IAppointment }) {
-  const meta = serviceMeta[appointment.serviceId];
+  const meta = getServiceMeta(appointment);
 
   return (
     <div className="flex min-w-0 items-center gap-3">
       <span className="relative inline-flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#EFE7DD] text-[#A58B73] ring-1 ring-[#D8C5B2]/60">
-        {meta?.image ? (
+        {meta.image ? (
           <Image
             src={meta.image}
             alt=""
@@ -53,7 +53,7 @@ function ServiceIdentity({ appointment }: { appointment: IAppointment }) {
           {appointment.serviceName}
         </p>
         <p className="mt-0.5 truncate text-xs text-[#625D56]">
-          {meta?.category ?? "Salon service"}
+          {meta.category ?? "Salon service"}
         </p>
       </div>
     </div>

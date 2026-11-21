@@ -25,9 +25,10 @@ export function AccessButton({
 
     try {
       const response = await isBlockeds(user._id, newValue);
-      console.log(response.modifiedCount);
-      if(response.modifiedCount > 0) {
-        setIsBlocked(newValue);
+      
+      console.log(response);
+      if(response.isBlocked !== newValue) {
+         setIsBlocked(newValue);
         toast.add({
           title: "User updated",
           description: "User has been updated successfully",

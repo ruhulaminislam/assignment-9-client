@@ -1,4 +1,4 @@
-import { getAllAppointmentsApi, IAppointment } from "@/data/appiontmentapi";
+import { getAllAppointmentsApi, getAppointmentsByCustomerIdApi, IAppointment } from "@/data/appiontmentapi";
 import {
   AlertCircle,
   CalendarCheck2,
@@ -15,6 +15,8 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -112,11 +114,15 @@ function StatCard({
 }
 
 export default async function OverviewPage() {
+  const session = await auth.api.getSession({
+      headers: await headers() // you need to pass the headers object.
+  })
+    const userId = session?.user?.id;
   let appointments: IAppointment[] = [];
   let hasError = false;
 
   try {
-    const data = await getAllAppointmentsApi();
+    const data = await getAppointmentsByCustomerIdApi(userId as string);
 
     if (Array.isArray(data)) {
       appointments = data as IAppointment[];

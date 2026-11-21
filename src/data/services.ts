@@ -1,3 +1,4 @@
+ "use server";
 import { allauthFetch } from "./core"
 
 export type ServiceStatus = "active" | "inactive"
@@ -18,7 +19,7 @@ export interface Service {
   updatedAt: string
 
 }
-
+//public services onle show active services
 export const featuredServices = async (query:string="")=>{
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/public?${query}`,{
     cache: "no-store"
@@ -36,13 +37,11 @@ export const getServiceById =async(id:string)=>{
   return data;
 }
 
-//  get all services
+//  get all services for admin
 export const getServices =async():Promise<Service[]>=>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services`,{
-    cache: "no-store"
-  });
-  const data = await response.json();
-  return data;
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services`;
+   const response = await allauthFetch(api, "GET");
+   return response;
 }
 //add service
 export const addService = async (service: Service) => {
@@ -53,37 +52,25 @@ export const addService = async (service: Service) => {
 
 //delete service
 export const deleteService = async (id: string) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/delete/${id}`, {
-    method: "DELETE",
-  });
-  const data = await response.json();
-  return data;
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/delete/${id}`;
+  const response = await allauthFetch(api, "DELETE");
+  return response;
 }
 
 //service status toggle
 export const toggleServiceStatus = async (id: string, status: ServiceStatus) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/status/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ status }),
-  });
-  const data = await response.json();
-  return data;
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/status/${id}`;
+  const response = await allauthFetch(api, "PATCH", { status });
+  return response;
+  
 }
 
 
 //update service
 export const updateService = async (id: string, service: Service) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/update/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(service),
-  });
-  const data = await response.json();
-  return data;
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/update/${id}`;
+  const response = await allauthFetch(api, "PATCH", service);
+  return response;
+ 
 }
 

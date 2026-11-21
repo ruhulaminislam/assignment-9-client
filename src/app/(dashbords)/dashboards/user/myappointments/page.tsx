@@ -1,18 +1,26 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
+import { getAppointmentsByCustomerIdApi } from "@/data/appiontmentapi";
+
 import { inter, playfair } from "./fonts";
 import { MyAppointments } from "./my-appointments";
-import { getAppointmentsByCustomerIdApi } from "@/data/appiontmentapi";
-import { headers } from "next/headers";
 
 export default async function MyAppointmentsPage() {
-  
-const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
-})
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+
   const userId = session?.user?.id;
-  const appointments = await getAppointmentsByCustomerIdApi(userId as string);
-  console.log("appointments", appointments, userId);
+
+  if (!userId) {
+    redirect("/login");
+  }
+
+  const result = await getAppointmentsByCustomerIdApi(userId);
+  const appointments = Array.isArray(result) ? result : [];
+
   return (
     <div className={`${inter.className} bg-[#F7F3EE] px-4 py-8 sm:px-6 lg:px-8`}>
       <div className="mx-auto w-full max-w-7xl">

@@ -1,8 +1,7 @@
 import { Eye, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { cancelAppointmentApi, type IAppointment } from "@/data/appiontmentapi";
-import Link from "next/link";
+import type { IAppointment } from "@/data/appiontmentapi";
 import PaymentCard from "@/app/paymentCard/paymentCard";
 
 interface AppointmentActionsProps {
@@ -18,10 +17,6 @@ export function AppointmentActions({
   onCancel,
   withLabels = false,
 }: AppointmentActionsProps) {
-  const cancelAppointment = async () => {
-   const result =  await cancelAppointmentApi(appointment._id);
-   console.log(result);
-  };
   const canCancel = appointment.status === "pending";
   const canPay =
     appointment.status === "confirmed" &&
@@ -39,7 +34,7 @@ export function AppointmentActions({
     "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#292824]/40";
 
   const sharedClasses = `${buttonClasses} ${focusClasses}`;
-  
+
   return (
     <div className={wrapperClasses}>
       <Button
@@ -60,7 +55,7 @@ export function AppointmentActions({
           variant="ghost"
           aria-label={`Cancel ${appointment.serviceName} appointment`}
           title="Cancel appointment"
-          onClick={() => onCancel(cancelAppointment)}
+          onClick={() => onCancel(appointment)}
           className={`${sharedClasses} text-[#B94343] hover:bg-[#FBE9E7] hover:text-[#B94343]`}
         >
           <X aria-hidden="true" strokeWidth={1.75} />

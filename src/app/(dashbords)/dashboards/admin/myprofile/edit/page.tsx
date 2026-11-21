@@ -66,12 +66,12 @@ function EditCard({
 export const EditProfilePage = async () => {
   const user = await getProfileUser();
   const initials = getInitials(user.name);
-
+   const role = user?.role;
   return (
     <div className={`${inter.className} bg-[#F7F3EE] px-4 py-8 sm:px-6 lg:px-8`}>
       <div className="mx-auto w-full max-w-3xl">
         <Link
-          href="/dashboards/admin/myprofile"
+          href={`/dashboards/${role}/myprofile`}
           className="inline-flex h-10 w-fit items-center gap-2 rounded-lg border border-[#D8C5B2] bg-white px-3.5 text-sm font-medium text-[#292824] transition-colors hover:border-[#A58B73] hover:bg-[#F7F3EE] focus-visible:ring-2 focus-visible:ring-[#A58B73]/40 focus-visible:outline-none"
         >
           <ArrowLeft aria-hidden="true" className="size-4" strokeWidth={1.75} />
@@ -95,7 +95,7 @@ export const EditProfilePage = async () => {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <EditCard
-            href="/dashboards/admin/myprofile/edit/name"
+            href={`/dashboards/${role}/myprofile/edit/name`}
             icon={UserRound}
             title="Display Name"
             description="The name shown next to your profile image across the dashboard."
@@ -106,7 +106,7 @@ export const EditProfilePage = async () => {
           </EditCard>
 
           <EditCard
-            href="/dashboards/admin/myprofile/edit/image"
+            href={`/dashboards/${role}/myprofile/edit/image`}
             icon={ImageIcon}
             title="Profile Image"
             description="A photo or image URL used to identify your account."

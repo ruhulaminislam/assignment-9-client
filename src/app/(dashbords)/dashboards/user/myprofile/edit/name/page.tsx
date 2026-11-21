@@ -17,12 +17,13 @@ const playfair = Playfair_Display({
 
 export const EditNamePage = async () => {
   const user = await getProfileUser();
+  const role = user.role;
 
   return (
     <div className={`${inter.className} bg-[#F7F3EE] px-4 py-8 sm:px-6 lg:px-8`}>
       <div className="mx-auto w-full max-w-2xl">
         <Link
-          href="/dashboards/admin/myprofile/edit"
+          href={`/dashboards/${role}/myprofile/edit`}
           className="inline-flex h-10 w-fit items-center gap-2 rounded-lg border border-[#D8C5B2] bg-white px-3.5 text-sm font-medium text-[#292824] transition-colors hover:border-[#A58B73] hover:bg-[#F7F3EE] focus-visible:ring-2 focus-visible:ring-[#A58B73]/40 focus-visible:outline-none"
         >
           <ArrowLeft aria-hidden="true" className="size-4" strokeWidth={1.75} />

@@ -1,3 +1,6 @@
+ "use server";
+
+import { allauthFetch } from "./core";
 
 export interface Payment {
   _id: string;
@@ -14,36 +17,16 @@ export interface Payment {
 }
 
 export const transactions = async (session_id: string) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`,
-    {
-      cache: "no-store",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ session_id }),
-    },
-  )
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new Error(data.message || data.error || "Transaction failed")
-  }
-
-  return data
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`
+  const response = await allauthFetch(api, "POST", { session_id })
+  return response
+  
 }
 
 //all transactions
 export const getAllTransactions = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`)
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`
+  const response = await allauthFetch(api, "GET")
 
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new Error(data.message || data.error || "Transaction failed")
-  }
-
-  return data
+  return response 
 }

@@ -41,7 +41,7 @@ export default function NameForm({
     // Ready for the PATCH endpoint. Later this becomes:
     // updateAdminProfile(userId, preparedUpdate)
     const preparedUpdate = { name: nextName };
-     const response = await updateUserProfile(userId, preparedUpdate);
+     const response = await updateAdminProfile(userId, preparedUpdate);
     console.log(`Prepared profile update for ${userId}:`, response);
     if (response.modifiedCount > 0) {
      toast.add({

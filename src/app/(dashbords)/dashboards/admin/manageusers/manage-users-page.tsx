@@ -34,11 +34,16 @@ import { formatDate } from "./user-helpers";
  * It can be replaced with API data later without changing the UI.
  */
 
-const mockUsers: IUser[] = await allusers()
+
 
 // Admin accounts are never counted as customers.
-const customers = mockUsers.filter((user) => user.role !== "admin");
 
+
+
+
+export const ManageUsersPage = ({ mockUsers }: { mockUsers: IUser[] }) => {
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const customers = mockUsers.filter((user) => user.role !== "admin");
 const stats: {
   id: string;
   label: string;
@@ -72,10 +77,6 @@ const stats: {
     iconClasses: "bg-[#FBE9E7] text-[#B94343] ring-[#B94343]/20",
   },
 ];
-
-export const ManageUsersPage = () => {
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-
   return (
     <div className={`${inter.className} bg-[#F7F3EE] px-4 py-8 sm:px-6 lg:px-8`}>
       <div className="mx-auto w-full max-w-7xl">

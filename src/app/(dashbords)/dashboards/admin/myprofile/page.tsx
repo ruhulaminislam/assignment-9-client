@@ -105,7 +105,7 @@ export const MyProfilePage = async () => {
           </div>
 
           <Link
-            href="/dashboards/admin/myprofile/edit"
+            href={`/dashboards/${user.role}/myprofile/edit`}
             className="inline-flex h-10 w-fit shrink-0 items-center gap-2 rounded-lg bg-[#292824] px-4 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[#292824]/90 focus-visible:ring-2 focus-visible:ring-[#292824]/40 focus-visible:outline-none"
           >
             <Pencil aria-hidden="true" className="size-4" strokeWidth={1.75} />

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CircleAlert, Info, Save } from "lucide-react";
-import { updateAdminProfile } from "@/data/users";
+import { updateAdminProfile, updateUserProfile } from "@/data/users";
 import { toast, Toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 
@@ -38,10 +38,9 @@ export default function NameForm({
 
     setError(null);
 
-    // Ready for the PATCH endpoint. Later this becomes:
-    // updateAdminProfile(userId, preparedUpdate)
+    
     const preparedUpdate = { name: nextName };
-     const response = await updateAdminProfile(userId, preparedUpdate);
+     const response = await updateUserProfile(userId, preparedUpdate);
     console.log(`Prepared profile update for ${userId}:`, response);
     if (response.modifiedCount > 0) {
      toast.add({

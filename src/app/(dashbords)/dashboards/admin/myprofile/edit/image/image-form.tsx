@@ -58,7 +58,7 @@ export default function ImageForm({
     // Ready for the PATCH endpoint. Later this becomes:
     // updateAdminProfile(userId, preparedUpdate)
     const preparedUpdate = { image: nextImage };
-    const response = await updateUserProfile(userId, preparedUpdate);
+    const response = await updateAdminProfile(userId, preparedUpdate);
     if(response.modifiedCount > 0){
       console.log(`Prepared profile update for ${userId}:`, response);
       toast.add({
