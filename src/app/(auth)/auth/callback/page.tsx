@@ -22,7 +22,7 @@ export default function AuthCallbackPage() {
     } else if (session.user.role === "user") {
       router.replace("/dashboards/user/overview");
     } else {
-      router.replace("/login");
+      router.replace("/sign-in");
     }
   }, [session, isPending, router]);
 

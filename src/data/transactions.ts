@@ -15,7 +15,7 @@ export interface Payment {
   currency: string;
   paymentDate: Date;
 }
-
+//transaction post request
 export const transactions = async (session_id: string) => {
   const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`
   const response = await allauthFetch(api, "POST", { session_id })

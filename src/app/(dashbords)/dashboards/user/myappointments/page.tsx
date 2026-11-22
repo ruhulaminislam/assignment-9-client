@@ -15,7 +15,7 @@ export default async function MyAppointmentsPage() {
   const userId = session?.user?.id;
 
   if (!userId) {
-    redirect("/login");
+    redirect("/sign-in");
   }
 
   const result = await getAppointmentsByCustomerIdApi(userId);
