@@ -33,6 +33,9 @@ export const getServiceById =async(id:string)=>{
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/${id}`,{
     cache: "no-store"
   });
+  if(!response.ok){
+    return null;
+  }
   const data = await response.json();
   return data;
 }

@@ -8,13 +8,15 @@ import { ArrowLeft, CalendarPlus, Clock } from "lucide-react";
 import { Inter, Playfair_Display } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getServiceById, Service } from "@/data/services";
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Appointment from "./appointment";
-import { toast } from "@/components/ui/toast";
+import NotFounds from "./not-found";
+
+
 
 
 
@@ -48,7 +50,9 @@ export default async function ServiceDetailsPage({
   }
  
   const service:Service =await  getServiceById(id);
- 
+   if(!service){
+    notFound();
+   }
 
   return (
     <section
