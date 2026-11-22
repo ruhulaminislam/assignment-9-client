@@ -120,10 +120,16 @@ export default function EditServiceButton({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSaving(true);
     setError(null);
+
+    if (!imageUrl) {
+      setError("A service image is required.");
+      setIsSaving(false);
+      return;
+    }
 
     const values = Object.fromEntries(new FormData(event.currentTarget));
 
@@ -146,6 +152,7 @@ export default function EditServiceButton({
           title: "Service updated successfully",
           description: "The service has been updated successfully",
         });
+        router.refresh();
       }else{
         toast.add({
           title: "Service update failed",
@@ -329,8 +336,14 @@ export default function EditServiceButton({
               Service Image
             </h2>
             <p className="mt-1 text-xs leading-5 text-[#625D56]">
-              Choose a clear photo from your device. Optional.
+              {service.image ? "Choose a clear photo from your device (optional)." : "Choose a clear photo from your device. Required."}
             </p>
+
+            {!service.image && !imageUrl ? (
+              <p className="mt-2 text-xs text-[#B94343]" role="alert">
+                Please upload an image before saving.
+              </p>
+            ) : null}
 
             <input
               ref={fileInputRef}

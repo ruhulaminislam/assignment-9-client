@@ -1,5 +1,6 @@
 
 import type { ServiceCategory } from "@/data/categories";
+import { Service } from "@/data/services";
 import { ArrowUpRight } from "lucide-react";
 import { Playfair_Display } from "next/font/google";
 import Image from "next/image";
@@ -11,13 +12,13 @@ const playfair = Playfair_Display({
 });
 
 interface CategoryCardProps {
-  category: ServiceCategory;
+  category: Service;
 }
 
 export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link
-      href={`/services?category=${category.id}`}
+      href={`/services?category=${encodeURIComponent(category.category)}`}
       className="
         group flex h-full w-full min-w-0 flex-col
         overflow-hidden rounded-2xl
@@ -38,7 +39,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
       <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#EFE7DD]">
         <Image
           src={category.image}
-          alt={`${category.name} at SalonBook`}
+          alt={`${category.category} at SalonBook`}
           fill
           sizes="
             (min-width: 1024px) 25vw,
@@ -67,7 +68,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
             lg:min-h-[4rem] lg:text-2xl
           `}
         >
-          {category.name}
+          {category.category}
         </h3>
 
         {/* Card Footer */}

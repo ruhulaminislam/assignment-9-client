@@ -2,6 +2,7 @@
 import { serviceCategories, type ServiceCategory } from "@/data/categories";
 import { Inter, Playfair_Display } from "next/font/google";
 import { CategoryCard } from "./CategoryCard";
+import { featuredServices, Service } from "@/data/services";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,9 +15,24 @@ const playfair = Playfair_Display({
 });
 
 export async function SalonServiceCategories() {
-  const response = await serviceCategories;
-  const data: ServiceCategory[] = response;
+  const response = await featuredServices();
+const data: Service[] = response;
 
+// Get 7 unique categories with active services
+const seenCategories = new Set<string>();
+
+const categories = data.filter((service) => {
+  if (!service.category || service.status !== "active") {
+    return false;
+  }
+
+  if (seenCategories.has(service.category)) {
+    return false;
+  }
+
+  seenCategories.add(service.category);
+  return true;
+}).slice(0, 7);
   return (
     <section
       aria-labelledby="salon-service-categories-heading"
@@ -42,9 +58,9 @@ export async function SalonServiceCategories() {
         </div>
 
         <ul className="mt-12 flex list-none flex-wrap items-stretch justify-center gap-4 md:gap-6 lg:mt-16 lg:gap-8">
-          {data.map((category) => (
+          {categories.map((category) => (
             <li
-              key={category.id}
+              key={category._id}
               className="
                 flex min-w-0
                 w-[calc((100%-1rem)/2)]
