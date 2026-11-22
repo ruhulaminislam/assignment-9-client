@@ -3,7 +3,13 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
- 
+ export const getTokenFromServer = async () => {
+  const  data  = await auth.api.getToken({
+    headers: await headers(),
+  });
+    const  token=data?.token
+  return token;
+};
 export const getUserData = async () => {
  
   const session = await auth.api.getSession({
@@ -19,13 +25,8 @@ export const getToken=async()=>{
    }
    return session.session.token;
 }
-export const allauthFetch = async (
-  api: string,
-  method: string,
-  data?: unknown
-) => {
-  const token = await getToken();
-
+export const allauthFetch = async ( api: string,method: string,data?: unknown) => {
+  const token = await getTokenFromServer()
   const response = await fetch(api, {
     method,
     headers: {
