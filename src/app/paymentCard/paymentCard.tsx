@@ -56,16 +56,18 @@ export default function PaymentCard({
   withLabels,
 }: PaymentCardProps) {
   const [isRedirecting, setIsRedirecting] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState("")
 
   const isPaid = appointment.paymentStatus === "paid"
   const isCancelled = appointment.status === "cancelled"
 
   const handlePayment = async () => {
-    try {
-      setIsRedirecting(true)
-      setError("")
+    setIsProcessing(true)
+    setIsRedirecting(true)
+    setError("")
 
+    try {
       const response = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: {
@@ -95,6 +97,7 @@ export default function PaymentCard({
         error instanceof Error ? error.message : "Something went wrong",
       )
       setIsRedirecting(false)
+      setIsProcessing(false)
     }
   }
 
@@ -114,12 +117,19 @@ export default function PaymentCard({
         render={
           <Button
             type="button"
-            disabled={isCancelled}
+            disabled={isCancelled || isProcessing}
             className={`rounded-lg bg-[#292824] font-medium text-white hover:bg-[#292824]/90 focus-visible:ring-[#292824]/40 ${
               withLabels ? "h-9 px-3.5 text-xs" : "h-8 px-3 text-xs"
-            }`}
+            } disabled:opacity-50 disabled:hover:bg-[#292824]`}
           >
-            Pay Now
+            {isProcessing ? (
+              <>
+                <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+                Processing Payment...
+              </>
+            ) : (
+              "Pay Now"
+            )}
           </Button>
         }
       />
