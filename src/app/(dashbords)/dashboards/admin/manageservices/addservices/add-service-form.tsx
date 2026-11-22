@@ -60,6 +60,8 @@ export default function AddServiceForm({ categories }: { categories: string[] })
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
+  const [imageError, setImageError] = useState<string | null>(null);
+
   // Release the object URL when it is replaced or the page unmounts.
   useEffect(() => {
     return () => {
@@ -78,8 +80,11 @@ const handleImageChange = async (
   if (!file) {
     setSelectedFile(null);
     setPreviewUrl(null);
+    setImageError(null);
     return;
   }
+
+  setImageError(null);
 
   try {
     const formData = new FormData();
@@ -96,14 +101,27 @@ const handleImageChange = async (
     const data = await res.json();
 
     if (!res.ok || !data.success) {
-      throw new Error("Image upload failed");
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setImageError("Image upload failed. Please try again.");
+      toast.add({
+        title: "Image upload failed",
+        description: "Please try again",
+      });
+      return;
     }
 
     setSelectedFile(file);
     setPreviewUrl(data.data.url);
-
+    setImageError(null);
   } catch (error) {
-    console.error("Image upload error:", error);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setImageError("Image upload failed. Please try again.");
+    toast.add({
+      title: "Image upload failed",
+      description: "Please try again",
+    });
   }
 };
 
@@ -127,6 +145,11 @@ const handleRemoveImage = () => {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!previewUrl) {
+      setImageError("A service image is required.");
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const values = Object.fromEntries(formData);
@@ -369,8 +392,12 @@ const handleRemoveImage = () => {
           Service Image
         </h2>
         <p className="mt-1 text-xs leading-5 text-[#625D56]">
-          Choose a clear photo from your device. Optional.
+          Choose a clear photo from your device. Required.
         </p>
+
+        {imageError && (
+          <p className="mt-2 text-xs text-[#B94343]">{imageError}</p>
+        )}
 
         <input
           ref={fileInputRef}
@@ -379,6 +406,7 @@ const handleRemoveImage = () => {
           type="file"
           accept="image/png,image/jpeg,image/webp"
           aria-label="Service image file"
+          required
           onChange={handleImageChange}
           className="sr-only"
         />

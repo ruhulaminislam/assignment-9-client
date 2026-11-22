@@ -45,7 +45,11 @@ export default function SignInPage() {
       });
       if (Resdata.user?.role === "admin") {
         router.push("/dashboards/admin/overview");
-      } else if (Resdata.user?.role === "user") {
+      } else if(Resdata.user?.role === "user") {
+        if(Resdata.user?.isBlocked){
+          router.push("/");
+          return;
+        }
         router.push("/dashboards/user/overview");
       }
     } else {

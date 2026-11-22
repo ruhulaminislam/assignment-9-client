@@ -44,8 +44,12 @@ export const allauthFetch = async (
 
 export const requiterole = async (role:string) => {
     const session = await getUserData();
-    if(!session || session.user.role !==role){
+
+    if(!session || session.user.role !==role ){
         redirect("/unauthorized");
+    }
+    if(session.user.isBlocked){
+        redirect("/other/blocked");
     }
     return session
 }
