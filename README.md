@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SalonBook — Salon Appointment Booking Platform
 
-## Getting Started
+A full-stack salon appointment booking platform where users can explore salon services, book appointments, manage their bookings, and make online payments. Administrators can manage services, appointments, users, and transactions through a dedicated dashboard.
 
-First, run the development server:
+## 🌐 Project Links
+
+- **Live Website:** https://assignment-nine-client-omega.vercel.app
+- **Client Repository:** https://github.com/ruhulaminislam/assignment-9-client
+- **Server Repository:** https://github.com/ruhulaminislam/assignment-9-server
+- **Backend API:** https://assignment-nine-server-beta.vercel.app/
+
+## ✨ Key Features
+
+### 👤 User Features
+- User registration and login.
+- Google authentication.
+- Browse available salon services.
+- View detailed service information.
+- Book appointments by selecting a date and time slot.
+- View personal appointments.
+- Cancel eligible pending appointments.
+- Manage personal profile information.
+- Complete appointment payments through Stripe.
+
+### 🛠️ Admin Features
+- Admin dashboard for managing the platform.
+- Add, update, and delete salon services.
+- Activate or deactivate services.
+- Manage user accounts.
+- Block and unblock users.
+- Manage appointment statuses.
+- View transaction information.
+- Update admin profile information.
+
+### 💳 Payment Features
+- Stripe Checkout integration.
+- Secure payment verification through the backend.
+- Stripe webhook integration.
+- Transaction records stored in MongoDB.
+- Appointment payment status updated after successful payment.
+
+### 🔐 Authentication & Access Control
+- Better Auth authentication.
+- Email and password authentication.
+- Google OAuth authentication.
+- Role-based access for users and administrators.
+- Blocked-user access restrictions.
+- Protected dashboard and API operations.
+
+## 🧰 Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Framework | Next.js 16 |
+| UI Library | React 19 |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| UI Components | shadcn/ui |
+| Authentication | Better Auth |
+| Database | MongoDB |
+| Payment | Stripe |
+| Icons | Lucide React |
+| Charts | Recharts |
+| Hosting | Vercel |
+
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- Node.js
+- npm
+- Git
+- MongoDB connection
+- Stripe account
+- Google OAuth credentials
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ruhulaminislam/assignment-9-client.git
+
+cd assignment-9-client
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the project root.
+
+```env
+BETTER_AUTH_SECRET=your_better_auth_secret
+BETTER_AUTH_URL=http://localhost:3000
+
+NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+
+MONGODB_URI=your_mongodb_connection_string
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+STRIPE_SECRET_KEY=your_stripe_secret_key
+```
+
+**Important:** Keep `MONGODB_URI`, `STRIPE_SECRET_KEY`, `BETTER_AUTH_SECRET`, and `GOOGLE_CLIENT_SECRET` server-side only. Never expose secret values through client-side code or a `NEXT_PUBLIC_` variable.
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Build for production
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🔗 Backend Connection
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The frontend communicates with the backend API through:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_SERVER_URL=https://assignment-nine-server-beta.vercel.app
+```
 
-## Deploy on Vercel
+Make sure the backend server is deployed and accessible before testing the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The frontend is designed to be deployed on Vercel.
+
+1. Push the project to GitHub.
+2. Import the repository into Vercel.
+3. Configure the required environment variables.
+4. Set `NEXT_PUBLIC_SERVER_URL` to the deployed backend URL.
+5. Deploy the application.
+
+## 👨‍💻 Author
+
+**Md. Ruhul Amin**
+
+- GitHub: https://github.com/ruhulaminislam
