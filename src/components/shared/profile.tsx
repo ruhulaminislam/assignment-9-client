@@ -89,25 +89,28 @@ const Profile = () => {
     <div>
       {user ? (
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                className="h-auto cursor-pointer gap-1 rounded-full p-1 hover:bg-[#A58B73]/15"
-                aria-label="Open profile menu"
-              >
-                 <ChevronDown className="size-4 text-[#625D56]" aria-hidden="true" />
-                <Avatar>
-                  {user.image ? <AvatarImage src={user.image} alt="" referrerPolicy="no-referrer" /> : null}
-                  <AvatarFallback className="bg-[#F7F3EE] text-xs font-medium text-[#A58B73]">
-                    {initials}
-                  </AvatarFallback>
-                  <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-                </Avatar>
-                
-              </Button>
-            }
-          />
+         <DropdownMenuTrigger
+  className="inline-flex h-auto cursor-pointer items-center gap-1 rounded-full p-1 hover:bg-[#A58B73]/15"
+  aria-label="Open profile menu"
+>
+  <ChevronDown className="size-4 text-[#625D56]" aria-hidden="true" />
+
+  <Avatar>
+    {user?.image ? (
+      <AvatarImage
+        src={user.image}
+        alt=""
+        referrerPolicy="no-referrer"
+      />
+    ) : null}
+
+    <AvatarFallback className="bg-[#F7F3EE] text-xs font-medium text-[#A58B73]">
+      {initials}
+    </AvatarFallback>
+
+    <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+  </Avatar>
+</DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="end"
@@ -116,7 +119,7 @@ const Profile = () => {
           >
             <div className="flex items-center gap-3 px-3 py-3">
               <Avatar  className="size-12">
-                {user.image ? <AvatarImage src={user.image} alt="" referrerPolicy="no-referrer" /> : null}
+                {user?.image ? <AvatarImage src={user?.image} alt="" referrerPolicy="no-referrer" /> : null}
                 <AvatarFallback className="bg-[#F7F3EE] text-sm font-medium text-[#A58B73]">
                   {initials}
                 </AvatarFallback>
@@ -124,10 +127,10 @@ const Profile = () => {
 
               <div className="min-w-0 flex-1">
   <p className="truncate text-base font-semibold text-[#292824]">
-    {user.name}
+    {user?.name}
   </p>
   <p className="truncate text-sm text-[#625D56]">
-    {user.email}
+    {user?.email}
   </p>
   {user?.role ? (
     <span className="mt-1.5 inline-block rounded-full bg-[#A58B73]/15 px-2.5 py-0.5 text-xs font-medium capitalize text-[#7A634D]">
