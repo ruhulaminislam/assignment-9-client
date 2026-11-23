@@ -26,13 +26,17 @@ export async function getTransactionRows(): Promise<TransactionRow[]> {
     getAllTransactions(),
     getAllAppointmentsApi(),
     allusers(),
+    
   ]);
-
+  console.log("Transactions result: admin", transactionsResult);
+  console.log("Appointments: admin", appointments);
+  console.log("Users: admin", users);
   if (
     !Array.isArray(transactionsResult?.transactions) ||
     !Array.isArray(appointments) ||
     !Array.isArray(users)
   ) {
+    console.error("Unexpected response while loading transactions");
     throw new Error("Unexpected response while loading transactions");
   }
 

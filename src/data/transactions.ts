@@ -27,6 +27,6 @@ export const transactions = async (session_id: string) => {
 export const getAllTransactions = async () => {
   const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/transactions`
   const response = await allauthFetch(api, "GET")
-
+  console.log("All transactions:", response);
   return response 
 }

@@ -84,9 +84,9 @@ export function AppointmentDetailsDialog({
             <div className="rounded-xl bg-[#F7F3EE] p-3.5 ring-1 ring-[#D8C5B2]/50">
               <div className="flex min-w-0 items-center gap-3">
                 <span className="relative inline-flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#EFE7DD] text-[#A58B73] ring-1 ring-[#D8C5B2]/60">
-                  {meta?.image ? (
+                  {appointment.serviceImage ? (
                     <Image
-                      src={meta.image}
+                      src={appointment.serviceImage}
                       alt=""
                       fill
                       sizes="48px"
@@ -106,7 +106,7 @@ export function AppointmentDetailsDialog({
                     {appointment.serviceName}
                   </p>
                   <p className="mt-0.5 truncate text-xs text-[#625D56]">
-                    {meta?.category ?? "Salon service"}
+                    {appointment.serviceCategory}
                   </p>
                 </div>
 

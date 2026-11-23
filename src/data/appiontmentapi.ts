@@ -21,6 +21,8 @@ export interface IAppointment {
   createdAt: string;
   status: AppointmentStatus;
   paymentStatus: PaymentStatus;
+  serviceCategory: string;
+  serviceImage: string;
 }
 //create appointment by user  
 export const appointmentApi =async (data: any) => {

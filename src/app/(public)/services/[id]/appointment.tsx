@@ -132,6 +132,8 @@ export default function Appointment({ serviceId, service }: { serviceId: string,
       serviceName: service?.serviceName as string,
       customerName: session?.user?.name as string,
       customerEmail: session?.user?.email as string,
+      serviceCategory: service?.category as string,
+      serviceImage: service?.image as string,
     };
    
     setIsPending(true);
