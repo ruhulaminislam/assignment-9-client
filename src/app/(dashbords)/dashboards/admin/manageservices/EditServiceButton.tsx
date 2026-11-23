@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronDown,
@@ -27,8 +27,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { serviceCategories } from "@/data/categories";
-import { updateService, type Service, type ServiceStatus } from "@/data/services";
+// import { updateService, type Service, type ServiceStatus } from "@/data/services";
 import { toast } from "@/components/ui/toast";
+import { getServices, Service } from "@/data/services";
 
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap" });
 
@@ -168,7 +169,19 @@ export default function EditServiceButton({
       setIsSaving(false);
     }
   };
-
+  const [categories, setCategories] = useState<string[]>([]);
+   useEffect(() => {
+     const handlecategory=async()=>{
+        const services = await getServices();
+      
+        // Categories are the ones already used by the existing services.
+        const categories = [...new Set(services.map((service) => service.category))]
+          .sort((a, b) => a.localeCompare(b));
+      
+      setCategories(categories);
+     }
+     handlecategory();
+   }, []);
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
@@ -234,9 +247,9 @@ export default function EditServiceButton({
                     <option value="" disabled>
                       Select a category
                     </option>
-                    {serviceCategories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
                       </option>
                     ))}
                   </select>

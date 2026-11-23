@@ -81,7 +81,7 @@ export const ManageServicesPage = async () => {
   );
   const categoryCount = new Set(services.map((service) => service.category))
     .size;
-
+ 
   const stats: {
     id: string;
     label: string;

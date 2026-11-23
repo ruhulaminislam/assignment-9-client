@@ -21,23 +21,18 @@ export interface Service {
 }
 //public services onle show active services
 export const featuredServices = async (query:string=""): Promise<Service[]>=>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/public?${query}`,{
-    cache: "no-store"
-  });
-  const data = await response.json();
-  return data as Service[];
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/public?${query}`;
+  const response = await allauthFetch(api, "GET");
+  return response as Service[];
 }
 
 //get services by id
 export const getServiceById =async(id:string)=>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/services/${id}`,{
-    cache: "no-store"
-  });
-  if(!response.ok){
-    return null;
-  }
-  const data = await response.json();
-  return data;
+  const api = `${process.env.NEXT_PUBLIC_SERVER_URL}/services/${id}`;
+  const response = await allauthFetch(api, "GET");
+ 
+  
+  return response;
 }
 
 //  get all services for admin

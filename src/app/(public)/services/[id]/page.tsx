@@ -50,6 +50,7 @@ export default async function ServiceDetailsPage({
   }
  
   const service:Service =await  getServiceById(id);
+  console.log( "datilespage",service);
    if(!service){
     notFound();
    }
