@@ -60,6 +60,8 @@ export default function ImageForm({
     const preparedUpdate = { image: nextImage };
     const response = await updateUserProfile(userId, preparedUpdate);
     if(response.modifiedCount > 0){
+        window.dispatchEvent(new Event("profile-updated"));
+
       console.log(`Prepared profile update for ${userId}:`, response);
       toast.add({
         title: "Profile updated",
@@ -173,7 +175,7 @@ export default function ImageForm({
 
       <div className="mt-6 flex flex-col-reverse gap-3 border-t border-[#D8C5B2]/60 pt-5 sm:flex-row sm:items-center sm:justify-end">
         <Link
-          href="/dashboards/admin/myprofile"
+          href="/dashboards/user/myprofile"
           className="inline-flex h-11 items-center justify-center rounded-lg border border-[#D8C5B2] bg-white px-5 text-sm font-medium text-[#292824] transition-colors hover:border-[#A58B73] hover:bg-[#F7F3EE] focus-visible:ring-2 focus-visible:ring-[#A58B73]/40 focus-visible:outline-none"
         >
           Cancel

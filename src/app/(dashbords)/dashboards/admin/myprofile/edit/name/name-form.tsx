@@ -44,6 +44,8 @@ export default function NameForm({
      const response = await updateAdminProfile(userId, preparedUpdate);
     console.log(`Prepared profile update for ${userId}:`, response);
     if (response.modifiedCount  > 0) {
+        window.dispatchEvent(new Event("profile-updated"));
+
      toast.add({
       title: "Success",
       description: "Profile name updated successfully",

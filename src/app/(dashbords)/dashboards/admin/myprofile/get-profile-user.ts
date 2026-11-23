@@ -21,7 +21,7 @@ export type ProfileUser = SessionUser & {
  * If there is no session, the visitor is sent to the sign-in page.
  */
 export async function getProfileUser(): Promise<ProfileUser> {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await auth.api.getSession({ headers: await headers(), query:{disableCookieCache:true} });
 
   if (!session) {
     redirect("/sign-in");

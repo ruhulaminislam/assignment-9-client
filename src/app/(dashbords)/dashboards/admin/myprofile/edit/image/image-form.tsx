@@ -60,6 +60,8 @@ export default function ImageForm({
     const preparedUpdate = { image: nextImage };
     const response = await updateAdminProfile(userId, preparedUpdate);
     if(response.modifiedCount > 0){
+        window.dispatchEvent(new Event("profile-updated"));
+
       console.log(`Prepared profile update for ${userId}:`, response);
       toast.add({
         title: "Profile updated",

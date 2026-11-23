@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
+import { useEffect } from "react";
 
 const secondaryButtonClasses =
   "h-9 rounded-lg border-[#A58B73] bg-transparent px-3 text-xs font-medium text-[#292824] hover:border-[#A58B73] hover:bg-[#A58B73] hover:text-[#292824] focus-visible:border-[#A58B73] focus-visible:ring-[#292824]/40 sm:px-4 sm:text-sm lg:h-10 lg:px-5";
@@ -36,8 +37,28 @@ const logoutItemClasses =
 
 const Profile = () => {
   const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
-  const user = session?.user;
+  const { data: userData, isPending,refetch } = authClient.useSession();
+  //desiblecatch true
+   useEffect(() => {
+  const handleProfileUpdate = async () => {
+    // আগে Cookie Cache bypass করে নতুন Session আনবে
+    await authClient.getSession({
+      query: {
+        disableCookieCache: true,
+      },
+    });
+
+    // এরপর Navbar-এর Session Hook refresh করবে
+    await refetch();
+  };
+
+  window.addEventListener("profile-updated", handleProfileUpdate);
+
+  return () => {
+    window.removeEventListener("profile-updated", handleProfileUpdate);
+  };
+}, [refetch]);
+  const user = userData?.user;
   console.log("User image:", user?.image);
 
   const initials = user?.name
