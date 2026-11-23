@@ -25,7 +25,8 @@ export default async function AdminOverviewPage() {
 
   try {
     stats = await getAdminOverviewStats();
-  } catch {
+  } catch (error) {
+    console.error('Failed to load admin overview stats:', error);
     stats = null;
   }
 

@@ -16,9 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Payment } from "@/data/transactions";
 
-import type { TransactionRow } from "./transactions-data";
+import type { PaymentStatus, TransactionRow } from "./transactions-data";
 
 const headClasses =
   "h-12 px-3 py-2 text-[11px] leading-tight font-medium tracking-[0.14em] text-[#625D56] uppercase whitespace-normal align-bottom";
@@ -41,6 +40,10 @@ function formatAppointmentDate(value: string) {
 }
 
 function TransactionDate({ value }: { value: string }) {
+  if (!value) {
+    return <span className="text-[#89847E]">—</span>;
+  }
+
   const date = new Date(value);
 
   return (
@@ -99,19 +102,30 @@ function CustomerIdentity({ row }: { row: TransactionRow }) {
   );
 }
 
-function PaymentStatusBadge({ status }: { status: Payment["payment_status"] }) {
-  const isPaid = status === "paid";
+const statusStyles: Record<PaymentStatus, { label: string; classes: string }> = {
+  paid: {
+    label: "Paid",
+    classes: "bg-[#E6F3EA] text-[#287A55] ring-[#287A55]/20",
+  },
+  pending: {
+    label: "Pending",
+    classes: "bg-[#FFF4DE] text-[#A8730F] ring-[#A8730F]/20",
+  },
+  failed: {
+    label: "Failed",
+    classes: "bg-[#FBE9E7] text-[#B94343] ring-[#B94343]/20",
+  },
+};
+
+function PaymentStatusBadge({ status }: { status: PaymentStatus }) {
+  const { label, classes } = statusStyles[status] ?? statusStyles.failed;
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ring-1 ${
-        isPaid
-          ? "bg-[#E6F3EA] text-[#287A55] ring-[#287A55]/20"
-          : "bg-[#FBE9E7] text-[#B94343] ring-[#B94343]/20"
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ring-1 ${classes}`}
     >
       <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-      {isPaid ? "Paid" : "Failed"}
+      {label}
     </span>
   );
 }

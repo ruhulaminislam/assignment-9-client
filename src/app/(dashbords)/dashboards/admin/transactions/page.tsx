@@ -22,15 +22,15 @@ const playfair = Playfair_Display({
 
 export default async function TransactionsPage() {
   let rows: TransactionRow[] | null = null;
-  
+
   try {
     rows = await getTransactionRows();
-    console.log("Rows: admin", rows);
-    console.log("Rows length: admin", rows?.length);
-  } catch {
+  } catch (error) {
+    // Error গিলে না ফেলে terminal-এ দেখাও, নইলে debug করা যাবে না।
+    console.error("Failed to load admin transactions:", error);
     rows = null;
   }
-  
+
   return (
     <div
       className={`${inter.className} min-h-svh bg-[#F7F3EE] px-4 py-8 sm:px-6 lg:px-8`}
